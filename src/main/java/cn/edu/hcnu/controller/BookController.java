@@ -2,19 +2,38 @@ package cn.edu.hcnu.controller;
 
 import cn.edu.hcnu.pojo.Books;
 import cn.edu.hcnu.service.BookService;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import lombok.SneakyThrows;
+import net.sf.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.AbstractDocument;
+import java.io.Closeable;
+import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author CF
  * @create 2021/1/31 18:18
  */
-@Controller
+@RestController
 @RequestMapping("/book")
 
 public class BookController {
@@ -67,5 +86,26 @@ public class BookController {
         bookService.deleteBook(id);
         return "redirect:/book/allBook";
     }
+
+    @SneakyThrows
+    @RequestMapping(value = "/remote0",method = RequestMethod.POST)
+    @ResponseBody
+    public String remote(){
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost("http://192.168.0.31:8011");
+
+        CloseableHttpResponse response = httpClient.execute(httpPost);
+        InputStream content = response.getEntity().getContent();
+        StringBuilder stringBuilder = new StringBuilder();
+        byte[] bytes = new byte[1024];
+        System.out.println("------------------------");
+
+        int len;
+        while ((len = content.read(bytes)) != -1){
+            stringBuilder.append(new String(bytes,0,len));
+        }
+        return stringBuilder.toString();
+    }
+
 
 }
