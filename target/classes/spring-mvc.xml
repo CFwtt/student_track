@@ -26,4 +26,5 @@
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="cn.edu.hcnu.controller" />
 
+
 </beans>
