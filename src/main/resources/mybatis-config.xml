@@ -14,6 +14,6 @@
     </typeAliases>
 
     <mappers>
-        <mapper class="cn.edu.hcnu.dao.BookMapper"/>
+        <mapper class="cn.edu.hcnu.dao.StudentMapper"/>
     </mappers>
 </configuration>

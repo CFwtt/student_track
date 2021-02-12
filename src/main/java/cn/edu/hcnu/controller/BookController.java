@@ -1,33 +1,19 @@
 package cn.edu.hcnu.controller;
 
 import cn.edu.hcnu.pojo.Books;
-import cn.edu.hcnu.service.BookService;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
+import cn.edu.hcnu.service.StudentService;
 import lombok.SneakyThrows;
-import net.sf.json.JSONObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.AbstractDocument;
-import java.io.Closeable;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author CF
@@ -40,12 +26,12 @@ public class BookController {
     //controller 调 service 层
     @Autowired
     @Qualifier("BookServiceImpl")
-    private BookService bookService;
+    private StudentService studentService;
 
     //查询全部的书籍，并且返回到一个书籍展示页面
     @RequestMapping("/allBook")
     public String list(Model model){
-        List<Books> list = bookService.queryAllBook();
+        List<Books> list = studentService.queryAllBook();
         model.addAttribute("list",list);
         return "allBook";
     }
@@ -60,14 +46,14 @@ public class BookController {
     @RequestMapping("/addBook")
     public String addBook(Books books){
         System.out.println("addBook=>"+books);
-        bookService.addBook(books);
+        studentService.addBook(books);
         return "redirect:/book/allBook";
     }
 
     //跳转到修改书籍页面
     @RequestMapping("/toUpdateBook")
     public String toUpdatePaPer(int id,Model model){
-        Books books = bookService.queryBookById(id);
+        Books books = studentService.queryBookById(id);
         model.addAttribute("Qbook",books);
         return "updateBook";
     }
@@ -76,14 +62,14 @@ public class BookController {
     //修改书籍
     @RequestMapping("/updateBook")
     public String updateBook(Books books){
-        bookService.updateBook(books);
+        studentService.updateBook(books);
        return "redirect:/book/allBook";
     }
 
     //删除书籍
     @RequestMapping("/deleteBook")
     public String deleteBook(int id){
-        bookService.deleteBook(id);
+        studentService.deleteBook(id);
         return "redirect:/book/allBook";
     }
 

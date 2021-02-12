@@ -11,7 +11,7 @@
     <context:component-scan base-package="cn.edu.hcnu.service" />
 
     <!--BookServiceImpl注入到IOC容器中-->
-    <bean id="BookServiceImpl" class="cn.edu.hcnu.service.BookServiceImpl">
+    <bean id="BookServiceImpl" class="cn.edu.hcnu.service.StudentServiceImpl">
         <property name="bookMapper" ref="bookMapper"/>
     </bean>
 

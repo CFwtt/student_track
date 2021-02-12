@@ -9,7 +9,7 @@ import java.util.List;
  * @Author CF
  * @create 2021/1/30 17:00
  */
-public interface BookMapper {
+public interface StudentMapper {
     //增加一本书
     int addBook(Books books);
 

@@ -47,7 +47,7 @@
             $("#subimt").click(function () {
                 var name = $("#name").val();
                 var sexchoice = $("input:radio:checked").val();
-                if(sexchoice==="男性"){var sex="1"}else{sex="2"}
+                if(sexchoice==="男性"){var sex=1}else{sex=2}
                 var sno = $("#sno").val();
                 var major = $("#major").val();
                 var grade = $("#grade").val();
@@ -69,11 +69,11 @@
                                             "PersonId" : ""+sno+"",
                                             "PersonName":""+name+"",
                                             "Sex": sex,
+                                            "Phone":stucell,
                                             "PersonExtension":
                                                 {
                                                     "PersonData1":""+major+"",
-                                                    "PersonData2":""+grade+"",
-                                                    "PersonData3":""+stucell+"",
+                                                    "PersonData3":""+grade+"",
                                                     "PersonData4":""+parentcell+""
                                                 },
                                             "PersonPhoto" :""+base64+""
@@ -87,8 +87,10 @@
                     //dataType : "json",
                     success: function (data) {
                         var obj = eval("(" + data + ")")
-                        console.log();
-                        if(obj.Code===1){alert("添加成功！")}else{alert("添加失败！Code:"+obj.Code)}
+                        console.log(major,grade);
+                        if(obj.Code===1){alert("添加成功！")
+                            location.href="index.jsp";
+                        }else{alert("添加失败！Code:"+obj.Code)}
                     }
                 })
 
@@ -139,7 +141,7 @@
                         <input type="file" id="img_upload">
                         <p style="color: red" class="help-block">提示:图片需小于960*960,2M!</p>
                     </div>
-                    <button  id="subimt"  class="btn btn-default">Submit</button>
+                    <button  id="subimt"  class="btn btn-default">提交</button>
 
             </div>
             <div class="col-md-4 column">

@@ -11,7 +11,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URLDecoder;
 
 @Controller
 public class ListController {
@@ -30,20 +33,20 @@ public class ListController {
      * @Date 19:01 2021/2/5
      * @Param [json]
      */
-    @RequestMapping(value = "/testJson1", produces = "text/html;charset=UTF-8")
+    @RequestMapping(value = "/testJson1", produces = "text/html;application/json;charset=UTF-8")
     @ResponseBody
     public String httpPostWithJSON(@RequestBody JSONObject json) throws Exception {
 
+        // json = URLDecoder.decode(json, "UTF-8");
         HttpPost httpPost = new HttpPost("http://192.168.0.31:8011");
         CloseableHttpClient client = HttpClients.createDefault();
         String respContent = null;
-        System.out.println("jjjjjjjjjjj-------:"+json);
+        System.out.println("传入中间代理服务器的JSON："+json);
 
         StringEntity entity = new StringEntity(json.toString(), "utf-8");//解决中文乱码问题
         entity.setContentEncoding("UTF-8");
         entity.setContentType("application/json");
         httpPost.setEntity(entity);
-        System.out.println(entity);
 
         HttpResponse resp = client.execute(httpPost);
 
@@ -52,7 +55,7 @@ public class ListController {
             HttpEntity he = resp.getEntity();
             respContent = EntityUtils.toString(he, "UTF-8");
         }
-        System.out.println("=========" + respContent);
+        System.out.println("返回的JSON：" + respContent);
         return respContent;
     }
 
@@ -63,13 +66,8 @@ public class ListController {
     @ResponseBody
     public User selectUser(@PathVariable("id") String id) {
         //查看数据接收
-        System.out.println("id=" + id);
         User user = new User();
-        //模拟根据id查询出到用户对象数据
-        if (id.equals("1234")) {
-            user.setUsername("tom");
-        }
-        //返回JSON格式的数据
+        System.out.println("id=" + id);
         return user;
     }
 
