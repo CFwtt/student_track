@@ -1,7 +1,5 @@
 package cn.edu.hcnu.dao;
-
-import cn.edu.hcnu.pojo.Books;
-import org.apache.ibatis.annotations.Param;
+import cn.edu.hcnu.pojo.Student;
 
 import java.util.List;
 
@@ -11,17 +9,17 @@ import java.util.List;
  */
 public interface StudentMapper {
     //增加一本书
-    int addBook(Books books);
+    int addStudent(Student student);
 
-    //删除一本书
-    int deleteBook(int id);
+    //删除一位学生信息
+    int deleteStudent(String sno);
 
-    //更新一本书
-    int updateBook(Books books);
+    //编辑学生信息
+    int updateStudent(Student student);
 
-    //查询一本书
-    Books queryBookById(int id);
+    //根据名字查询学生
+    Student queryStudentByName(String Name);
 
-    //查询全部书
-    List<Books> queryAllBook();
+    //查询全部学生
+    List<Student> queryAllStudent();
 }

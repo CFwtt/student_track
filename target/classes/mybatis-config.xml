@@ -4,9 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <settings>
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
-    </settings>
 
 <!--配置数据源，交给Spring去做-->
     <typeAliases>
@@ -14,6 +11,6 @@
     </typeAliases>
 
     <mappers>
-        <mapper class="cn.edu.hcnu.dao.BookMapper"/>
+        <mapper class="cn.edu.hcnu.dao.StudentMapper"/>
     </mappers>
 </configuration>

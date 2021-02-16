@@ -1,15 +1,21 @@
 package cn.edu.hcnu.controller;
 
 
+import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.pojo.User;
+import cn.edu.hcnu.service.StudentService;
+import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +24,40 @@ import java.net.URLDecoder;
 
 @Controller
 public class ListController {
+
+    //controller 调 service 层
+    @Autowired
+    @Qualifier("StudentServiceImpl")
+    private StudentService studentService;
+
     /**
-     * 接收页面请求的JSON数据，并返回JSON格式结果
-     */
+    * @author CF
+    * @Description 跳转到修改页面并把当前学号传过去
+    * @Date 17:38 2021/2/15
+    * @Param [sno, model]
+    * @return java.lang.String
+    */
+    @RequestMapping(value = "/toUpdate/{sno}", method = RequestMethod.GET)
+    public String selectUser(@PathVariable("sno") String sno,Model model) {
+        model.addAttribute("sno",sno);
+        return "updateStudent";
+    }
+
+
+    /**
+    * @author CF
+    * @Description 跳转到添加页面
+    * @Date 17:40 2021/2/15
+    * @Param []
+    * @return java.lang.String
+    */
     @RequestMapping("/toAddStudeent")
     public String toAddPaPer() {
         return "addStudent";
     }
+
+    @RequestMapping("/toComparison")
+    public String toComparison(){return "comparisonRecord";}
 
     /**
      * @return java.lang.String
@@ -59,16 +92,6 @@ public class ListController {
         return respContent;
     }
 
-    /**
-     * 接收RESTful风格的请求,其接收方式为GET
-     */
-    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public User selectUser(@PathVariable("id") String id) {
-        //查看数据接收
-        User user = new User();
-        System.out.println("id=" + id);
-        return user;
-    }
+
 
 }

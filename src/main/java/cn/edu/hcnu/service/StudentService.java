@@ -1,6 +1,5 @@
 package cn.edu.hcnu.service;
 
-import cn.edu.hcnu.pojo.Books;
 import cn.edu.hcnu.pojo.Student;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public interface StudentService {
     int updateStudent(Student student);
 
     //查询一个学生
-    Books queryStudentBysno(String sno);
+    Student queryStudentBysno(String sno);
 
     //查询全部学生
     List<Student> queryAllStudnet();

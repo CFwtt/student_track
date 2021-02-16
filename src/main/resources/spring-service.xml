@@ -10,9 +10,9 @@
     <!-- 扫描service相关的bean -->
     <context:component-scan base-package="cn.edu.hcnu.service" />
 
-    <!--BookServiceImpl注入到IOC容器中-->
-    <bean id="BookServiceImpl" class="cn.edu.hcnu.service.StudentServiceImpl">
-        <property name="bookMapper" ref="bookMapper"/>
+    <!--StudentServiceImpl注入到IOC容器中-->
+    <bean id="StudentServiceImpl" class="cn.edu.hcnu.service.StudentServiceImpl">
+        <property name="studentMapper" ref="studentMapper"/>
     </bean>
 
     <!-- 配置事务管理器 -->

@@ -65,7 +65,7 @@
                             var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
                             var stu_cell = obj.Data.PersonInfo.Phone;
                             var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
-                            tableContent += '<tr><td><input name="selectFlag" type="checkbox" value="'+ID+'"></td>';
+                            tableContent += '<tr><td><input name="selectFlag" type="checkbox" value="'+sno+'"></td>';
                             tableContent += '<td ><img  style="width: 120px;height: 125px;" src="' + img + '"></td>';
                             tableContent += '<td>' + name + '</td>';
                             tableContent += '<td>' + sex + '</td>';
@@ -75,7 +75,7 @@
                             tableContent += '<td>' + stu_cell + '</td>';
                             tableContent += '<td>' + parent_cell + '</td>';
                             tableContent += '<td>';
-                            tableContent += '<a href="${pageContext.request.contextPath }/user/'+ID+'">编辑</a>';
+                            tableContent += '<a href="${pageContext.request.contextPath }/toUpdate/'+sno+'">编辑</a>';
                             tableContent +=  '</td></tr>';
                             $("tbody").append(tableContent);
                             // });
@@ -118,7 +118,6 @@
                 })
             });
 
-
         });
 
     </script>
@@ -134,6 +133,7 @@
                 <tr><button id="list">查询所有学生</button>
                     <button id="delete">删除选中学生</button>
                     <button id="add" onclick="javascript:window.location.href='${pageContext.request.contextPath }/toAddStudeent'">添加学生</button>
+                    <button onclick="javascript:window.location.href='${pageContext.request.contextPath }/toComparison'">对比记录</button>
                 </tr>
                 <tr>
                     <th>选择</th>
