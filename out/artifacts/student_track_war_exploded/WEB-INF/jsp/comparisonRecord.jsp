@@ -1,131 +1,163 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>测试JSON交互</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <%--时间控件--%>
+
+    <%--时间选择控件--%>
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
+
     <script>
         $(function () {
             $("#datetimeStart").datetimepicker({
                 format: 'yyyy-mm-dd',
-                minView:'month',
+                minView: 'month',
                 language: 'zh-CN',
-                autoclose:true,
+                autoclose: true,
             });
             $("#datetimeEnd").datetimepicker({
                 format: 'yyyy-mm-dd',
-                minView:'month',
+                minView: 'month',
                 language: 'zh-CN',
-                autoclose:true,
-                startDate:new Date()
+                autoclose: true,
+                startDate: new Date()
             });
 
-            $("#getDate").click(function () {
-                var startDate = $("#startDate").val();
-                var endDate = $("#endDate").val();
-                var Name = $("#Name").val();
-                var Sno = $("#Sno").val();
+            $("#CheckVal").keyup(function () {
+                $("table>tbody>tr")
+                    .hide()
+                    .filter(":contains('" + ($(this).val()) + "')")
+                    .show();
+            });
+
+            $("#check").click(function () {
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/testJson1",
+                    type: "post",
+                    data: JSON.stringify({
+                        "Name": "personListRequest",
+                        "Data":
+                            {
+                                "Action": "getPersonList",
+                                "PersonType": 2,
+                                "PageNo": 1,
+                                "PageSize": 1000
+                            }
+                    }),
+                    contentType: "application/json;charset=UTF-8",
+                    success: function (data) {
+                        var obj = eval("(" + data + ")");
+                        $.each(obj.Data.PersonList, function (key, value) {
+                            needID(value.PersonId);
+                        })
+
+                    }
+                })
+
+                function needID(sno) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath }/testJson1",
+                        type: "post",
+                        data: JSON.stringify({
+                            "Name": "personListRequest",
+                            "Data":
+                                {
+                                    "Action": "getPerson",
+                                    "PersonType": 2,
+                                    "PersonId": sno,
+                                    "GetPhoto": 1
+                                }
+                        }),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function (data) {
+                            var obj = eval("(" + data + ")");
+                            tableContent = "";
+                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
+                            var name = obj.Data.PersonInfo.PersonName;
+                            var sex = obj.Data.PersonInfo.Sex;
+                            if (sex === 1) {
+                                sex = "男"
+                            } else {
+                                sex = "女"
+                            }
+                            ;
+                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
+                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
+                            var stu_cell = obj.Data.PersonInfo.Phone;
+                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
+
+                            tableContent += '<tr><td>' + name + '</td>';
+                            tableContent += '<td>' + sex + '</td>';
+                            tableContent += '<td>' + sno + '</td>';
+                            tableContent += '<td>' + major + '</td>';
+                            tableContent += '<td>' + grade + '</td></tr>';
+
+                            $("tbody").append(tableContent);
+                            // });
+
+                        }
+                    })
+                }
+
             });
 
         });
     </script>
 
 <body>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <table class="table table-bordered table-condensed  text-center">
-                <thead>
-                <tr>
-                    <td colspan="4">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>选择开始时间：</label>
-                                <!--指定 date标记-->
-                                <div class="input-group date" id="datetimeStart">
-                                    <input id="startDate" type="text" class="form-control" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label>选择结束时间：</label>
-                                <!--指定 date标记-->
-                                <div class="input-group date" id="datetimeEnd">
-                                    <input id="endDate" type="text" class="form-control" />
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                    <td rowspan="3" colspan="">
-                        <table border="1">
-                            <tr>
-                                <td id="stuFace" rowspan="3"></td>
-                                <td><p id="stuName"></p></td>
-                            </tr>
-                            <tr><td id="stuSno"></td></tr>
-                            <tr><td id="stu_cell"></td></tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <div class="form-group col-sm-3">
-                        <label>姓名查找：</label>
-                        <input id="Name" type="text" class="form-control"/>
-                    </div>
-                        <div class="form-group col-sm-3">
-                            <label>学号查找：</label>
-                            <input id="Sno" type="text" class="form-control"/>
-                        </div>
-                        <div style="float: right;margin-top: 30px">
-                            <label style="float: left">人脸查找：</label>
-                            <input id="Face" type="file"/>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4"><button id="check">开始查找</button></td>
-                </tr>
-                <tr>
-                    <td style="width:14%" >
-                        抓拍场所
-                    </td>
-                    <td style="width:14%;">
-                        抓拍图片
-                    </td>
-                    <td style="width:14%;">
-                        名单
-                    </td>
-                    <td style="width:20%;">
-                        时间
-                    </td>
-                    <td>
-                        详细内容
-                    </td>
-                </tr>
-                </thead>
-                <tbody id="content">
-
-                </tbody>
-            </table>
+<div class="header">
+    <div class="logo">学生轨迹分析</div>
+    <div class="loin">登录</div>
+</div>
+<div class="background">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-1 left">
+                <div class="nav">
+                    <ul>
+                        <li><a href="#" class="glyphicon glyphicon-camera">抓拍查询</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-road">轨迹分析</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-folder-open">人像库</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-facetime-video">摄像头</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-wrench">用户管理</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-lock">权限管理</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-11 right">
+                <div class="right-top">
+                    <table class="col-md-12">
+                        <tr><td colspan="3" class="newDateFont">最新数据<p style="font-size: 10px">(数据收集截止时间每天23:00)</p></td></tr>
+                        <tr class="top-content">
+                                   <td>今日抓拍人数<p><a href="#">123</a></p></td>
+                            <td>今日人员访问最多场所<p><a href="#" >123</a></p></td>
+                                  <td>今日无出行人员<p><a href="#">123</a></p></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="right-bottom"></div>
+            </div>
         </div>
     </div>
+</div>
+
 </div>
 </body>
 </html>

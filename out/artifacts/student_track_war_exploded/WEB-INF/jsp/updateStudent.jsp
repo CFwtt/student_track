@@ -46,7 +46,6 @@
 
             $("#subimt").click(function () {
                 var base64 = $("#base64str").val();
-                console.log(base64);
                 var name = $("#name").val();
                 var sexchoice = $("input:radio:checked").val();
                 if(sexchoice==="男性"){var sex=1}else{sex=2}
@@ -87,7 +86,6 @@
                     //dataType : "json",
                     success: function (data) {
                         var obj = eval("(" + data + ")")
-                        console.log(major,grade);
                         if(obj.Code===1){alert("修改成功！")
                             location.href="${pageContext.request.contextPath}/index.jsp";
                         }else{alert("修改失败！Code:"+obj.Code)}
@@ -117,7 +115,6 @@
                         var obj = eval("(" + data + ")");
                         $('#name').val(''+obj.Data.PersonInfo.PersonName+'');
                         var sex = obj.Data.PersonInfo.Sex;
-                        alert(sex);
                         if (sex==1){$('input:radio:first').attr('checked', 'checked');}
                         else{$('input:radio:last').attr('checked', 'checked');};
                         $('#sno').val(''+sno+'');
