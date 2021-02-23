@@ -1,13 +1,9 @@
 package cn.edu.hcnu.controller;
 
 
-import cn.edu.hcnu.pojo.Student;
-import cn.edu.hcnu.pojo.User;
 import cn.edu.hcnu.service.StudentService;
-import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -20,15 +16,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URLDecoder;
-
 @Controller
 public class ListController {
 
     //controller 调 service 层
-    @Autowired
-    @Qualifier("StudentServiceImpl")
+
+    @Qualifier("studentServiceImpl")
     private StudentService studentService;
+
+    @Autowired
+    public void setStudentService(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     /**
     * @author CF
@@ -57,7 +56,11 @@ public class ListController {
     }
 
     @RequestMapping("/toComparison")
-    public String toComparison(){return "comparisonRecord";}
+    public String toComparison(Model model){
+        model.addAttribute("mainright", "/WEB-INF/jsp/comparisonRecord1.jsp");
+        return "comparisonRecord";
+    }
+
 
     /**
      * @return java.lang.String

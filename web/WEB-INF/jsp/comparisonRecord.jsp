@@ -23,8 +23,15 @@
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
 
+
+
     <script>
+
         $(function () {
+
+            $('body').css("overflow-x","hidden");
+            $('body').css("height","870px")
+
             $("#datetimeStart").datetimepicker({
                 format: 'yyyy-mm-dd',
                 minView: 'month',
@@ -36,7 +43,6 @@
                 minView: 'month',
                 language: 'zh-CN',
                 autoclose: true,
-                startDate: new Date()
             });
 
             $("#CheckVal").keyup(function () {
@@ -123,36 +129,30 @@
 
 <body>
 <div class="header">
-    <div class="logo">学生轨迹分析</div>
-    <div class="loin">登录</div>
+    <div class="top-content">
+        <div class="logoInfo">
+            <img class="hidden-xs" src="${pageContext.request.contextPath}/statics/img/logo.png">
+            <span class="visible-xs">学生轨迹查询</span>
+        </div>
+    </div>
 </div>
+
 <div class="background">
     <div class="container">
         <div class="row">
-            <div class="col-md-1 left">
+            <div class="col-sm-1 left">
                 <div class="nav">
                     <ul>
-                        <li><a href="#" class="glyphicon glyphicon-camera">抓拍查询</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-road">轨迹分析</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-folder-open">人像库</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-facetime-video">摄像头</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-wrench">用户管理</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-lock">权限管理</a></li>
+                        <li><a id="a1" href="#" class="glyphicon glyphicon-camera">人员搜索</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-user">人员验证</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-folder-open">人库管理</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-facetime-video">基础设置</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-wrench hidden-xs">账号权限</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="col-md-11 right">
-                <div class="right-top">
-                    <table class="col-md-12">
-                        <tr><td colspan="3" class="newDateFont">最新数据<p style="font-size: 10px">(数据收集截止时间每天23:00)</p></td></tr>
-                        <tr class="top-content">
-                                   <td>今日抓拍人数<p><a href="#">123</a></p></td>
-                            <td>今日人员访问最多场所<p><a href="#" >123</a></p></td>
-                                  <td>今日无出行人员<p><a href="#">123</a></p></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="right-bottom"></div>
+            <div class="col-sm-11 right">
+                <jsp:include page="${mainright==null?'comparisonRecord1.jsp':mainright}"></jsp:include>
             </div>
         </div>
     </div>

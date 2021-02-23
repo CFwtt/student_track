@@ -1,41 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>测试JSON交互</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <%--时间控件--%>
-    <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<%--    <!--[if lt IE 9]>--%>
+<%--    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>--%>
+<%--    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>--%>
+<%--    <![endif]-->--%>
 
-    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+<%--    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>--%>
+
+<%--    &lt;%&ndash;时间选择控件&ndash;%&gt;--%>
+<%--    <link href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css" rel="stylesheet">--%>
+<%--    <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.min.js"></script>--%>
+<%--    <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.zh-CN.js"></script>--%>
+
+<%--    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">--%>
+<%--    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>--%>
+<%--    <link href="${pageContext.request.contextPath}/css/comparison.css" rel="stylesheet">--%>
+
+
+
     <script>
+
         $(function () {
+
+            $('body').css("overflow-x","hidden");
+            $('body').css("height","870px")
+
             $("#datetimeStart").datetimepicker({
                 format: 'yyyy-mm-dd',
-                minView:'month',
+                minView: 'month',
                 language: 'zh-CN',
-                autoclose:true,
+                autoclose: true,
             });
             $("#datetimeEnd").datetimepicker({
                 format: 'yyyy-mm-dd',
-                minView:'month',
+                minView: 'month',
                 language: 'zh-CN',
-                autoclose:true,
-                startDate:new Date()
+                autoclose: true,
             });
 
             $("#CheckVal").keyup(function () {
                 $("table>tbody>tr")
-                .hide()
-                .filter(":contains('"+($(this).val())+"')")
-                .show();
+                    .hide()
+                    .filter(":contains('" + ($(this).val()) + "')")
+                    .show();
             });
 
             $("#check").click(function () {
@@ -84,7 +98,12 @@
                             var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
                             var name = obj.Data.PersonInfo.PersonName;
                             var sex = obj.Data.PersonInfo.Sex;
-                            if (sex===1){sex="男"}else{sex="女"};
+                            if (sex === 1) {
+                                sex = "男"
+                            } else {
+                                sex = "女"
+                            }
+                            ;
                             var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
                             var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
                             var stu_cell = obj.Data.PersonInfo.Phone;
@@ -109,73 +128,82 @@
     </script>
 
 <body>
-<div class="container">
-    <div class="row clearfix">
-<%--            <table class="table table-bordered table-condensed  text-center">--%>
-<%--                <thead>--%>
-<%--                <tr>--%>
-<%--                    <td colspan="5">--%>
-<%--                        <div class="col-sm-4">--%>
-<%--                            <div class="form-group">--%>
-<%--                                <label>选择开始时间：</label>--%>
-<%--                                <!--指定 date标记-->--%>
-<%--                                <div class="input-group date" id="datetimeStart">--%>
-<%--                                    <input id="startDate" type="text" class="form-control" />--%>
-<%--                                    <span class="input-group-addon">--%>
-<%--                                        <span class="glyphicon glyphicon-calendar"></span>--%>
-<%--                                    </span>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                        <div class="col-sm-4">--%>
-<%--                            <div class="form-group">--%>
-<%--                                <label>选择结束时间：</label>--%>
-<%--                                <!--指定 date标记-->--%>
-<%--                                <div class="input-group date" id="datetimeEnd">--%>
-<%--                                    <input id="endDate" type="text" class="form-control" />--%>
-<%--                                    <span class="input-group-addon">--%>
-<%--                                        <span class="glyphicon glyphicon-calendar"></span></span>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td colspan="5">--%>
-<%--                        <div class="form-group col-sm-6">--%>
-<%--                        <label>姓名或学号查找：</label>--%>
-<%--                        <input id="CheckVal" type="text" class="form-control"/>--%>
-<%--                        </div>--%>
-<%--                        <div style="float: right;margin-top: 30px">--%>
-<%--                            <label style="float: left">人脸查找：</label>--%>
-<%--                            <input id="Face" type="file"/>--%>
-<%--                        </div>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td style="width:14%" >--%>
-<%--                        抓拍场所--%>
-<%--                    </td>--%>
-<%--                    <td style="width:14%;">--%>
-<%--                        抓拍图片--%>
-<%--                    </td>--%>
-<%--                    <td style="width:14%;">--%>
-<%--                        名单--%>
-<%--                    </td>--%>
-<%--                    <td style="width:20%;">--%>
-<%--                        时间--%>
-<%--                    </td>--%>
-<%--                    <td>--%>
-<%--                        详细内容--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
-<%--                </thead>--%>
-<%--                <tbody id="content">--%>
+         <div class="right-top">
+                    <div class="newDateFont">最新数据<p style="font-size: 10px;margin-bottom: 0">(数据收集截止时间每天23:00)</p></div>
+                    <div class="top-content">
+                        <ul>
+                            <li>今日抓拍人数<p><a href="#">123</a></p></li>
+                            <li>今日人员访问最多场所<p><a href="#">123</a></p></li>
+                            <li>今日无出行人员<p><a href="#">123</a></p></li>
+                        </ul>
+                    </div>
+                </div>
 
-<%--                </tbody>--%>
-<%--            </table>--%>
-        </div>
-    </div>
-</div>
+         <div class="right-bottom">
+                    <table class="table table-condensed table-layout: fixed text-center right-bottom-table">
+                        <tbody>
+
+                        <thead>
+                        <tr>
+                            <td colspan="6">
+                                <div class="col-sm-4 col-xs-6 right-bottom-start">
+                                    <div class="input-group date" id="datetimeStart">
+                                        <input id="startDate" type="text" class="form-control" placeholder="起始时间"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-xs-6 right-bottom-end">
+                                    <div class="input-group date" id="datetimeEnd">
+                                        <input id="endDate" type="text" class="form-control" placeholder="最终时间"/>
+                                        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-xs-12 inputSno">
+
+                                    <div class="input-group date" >
+                                        <input id="CheckVal" style="width: 297px" type="text" class="form-control" placeholder="请输入姓名或学号查找">
+                                    </div>
+                                </div>
+
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgb(240,242,245)">
+                            <th style="width: 14%">姓名</th>
+                            <th style="width: 8%">性别</th>
+                            <th style="width: 15%">学号</th>
+                            <th style="width: 10%">年级</th>
+                            <th style="width: 16%">专业</th>
+                            <th style="width: 18%">抓拍时间</th>
+                            <th>详情</th>
+                        </tr>
+                        </thead>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="Page" style="background-color: white">
+                        <nav style="float: right;padding-right: 43%;" aria-label="Page navigation">
+                            <ul style="vertical-align: center" class="pagination">
+                                <li>
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
 </body>
 </html>

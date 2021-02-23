@@ -2,176 +2,86 @@
          pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<html lang="en">
 <head>
-    <title>测试JSON交互</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
-    <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
-    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
-
+    <title>登录</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="Triple Forms Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
     <script>
-        $(function () {
-            $("#list").click(function () {
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
 
-                $.ajax({
-                    url: "${pageContext.request.contextPath }/testJson1",
-                    type: "post",
-                    data: JSON.stringify({
-                        "Name": "personListRequest",
-                        "Data":
-                            {
-                                "Action": "getPersonList",
-                                "PersonType": 2,
-                                "PageNo": 1,
-                                "PageSize": 1000
-                            }
-                    }),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (data) {
-                        var obj = eval("(" + data + ")");
-                        $.each(obj.Data.PersonList, function (key, value) {
-                            needID(value.PersonId);
-                        })
-
-                    }
-                })
-
-                function needID(sno) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "personListRequest",
-                            "Data":
-                                {
-                                    "Action": "getPerson",
-                                    "PersonType": 2,
-                                    "PersonId": sno,
-                                    "GetPhoto": 1
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            tableContent = "";
-                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
-                            var name = obj.Data.PersonInfo.PersonName;
-                            var sex = obj.Data.PersonInfo.Sex;
-                            if (sex===1){sex="男"}else{sex="女"};
-                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
-                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
-                            var stu_cell = obj.Data.PersonInfo.Phone;
-                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
-                            tableContent += '<tr><td><input name="selectFlag" type="checkbox" value="'+sno+'"></td>';
-                            tableContent += '<td ><img  style="width: 120px;height: 125px;" src="' + img + '"></td>';
-                            tableContent += '<td>' + name + '</td>';
-                            tableContent += '<td>' + sex + '</td>';
-                            tableContent += '<td>' + sno + '</td>';
-                            tableContent += '<td>' + major + '</td>';
-                            tableContent += '<td>' + grade + '</td>';
-                            tableContent += '<td>' + stu_cell + '</td>';
-                            tableContent += '<td>' + parent_cell + '</td>';
-                            tableContent += '<td>';
-                            tableContent += '<a href="${pageContext.request.contextPath }/toUpdate/'+sno+'">编辑</a>';
-                            tableContent +=  '</td></tr>';
-                            $("tbody").append(tableContent);
-                            // });
-
-                        }
-                    })
-                }
-
-            });
-
-            $("#delete").click(function () {
-                $("input[name=selectFlag][type=checkbox]").each(function () {
-                    var arr = $(this).val();
-                    if ($(this).prop("checked")){
-                        $.ajax({
-                            url: "${pageContext.request.contextPath }/testJson1",
-                            type: "post",
-                            data: JSON.stringify({
-                                    "Name" : "personListRequest",
-                                    "Data" :
-                                        {
-                                            "Action" : "deletePerson",
-                                            "PersonType" : 2,
-                                            "PersonId": ""+arr+""
-                                        }
-                                }
-                            ),
-
-                            contentType: "application/json;charset=UTF-8",
-                            //定义回调响应的数据格式为JSON字符串,该属性可以省略
-                            //dataType : "json",
-                            success: function (data) {
-                                var obj = eval("(" + data + ")")
-                                if(obj.Code===1){alert("删除成功！")
-                                    window.location.reload();
-                                }else{alert("添加失败！Code:"+obj.Code)}
-                            }
-                        })
-                    }
-                })
-            });
-
-        });
-
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
     </script>
+    <!-- Meta tag Keywords -->
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/style.css" type="text/css" media="all" />
+    <link href="${pageContext.request.contextPath}/statics/css/font-awesome.min.css" rel="stylesheet">
+
 </head>
+
 <body>
-
-<%--<input type="button" value="测试JSON交互" onclick=" testJson()"/>--%>
-<div class="container">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <table class="table table-bordered table-condensed table-layout: fixed text-center">
-                <thead>
-                <tr><button id="list">查询所有学生</button>
-                    <button id="delete">删除选中学生</button>
-                    <button id="add" onclick="javascript:window.location.href='${pageContext.request.contextPath }/toAddStudeent'">添加学生</button>
-                    <button onclick="javascript:window.location.href='${pageContext.request.contextPath }/toComparison'">对比记录</button>
-                </tr>
-                <tr>
-                    <th>选择</th>
-                    <th style="width: 132px;">
-                        库图片
-                    </th>
-                    <th>
-                        姓名
-                    </th>
-                    <th>
-                        性别
-                    </th>
-                    <th>
-                        学号
-                    </th>
-                    <th>
-                        专业
-                    </th>
-                    <th>
-                        年级
-                    </th>
-                    <th>
-                        学生手机号
-                    </th>
-                    <th>
-                        家长手机号
-                    </th>
-                    <th>
-                        操作
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="content">
-
-                </tbody>
-            </table>
+<div class="main-bg" id="mian">
+    <!-- title -->
+    <h1>人脸识别分析系统</h1>
+    <!-- //title -->
+    <div class="sub-main-w3">
+        <div class="image-style" style="width: 110px">
         </div>
+        <!-- vertical tabs -->
+        <div class="vertical-tab">
+            <div id="section1" class="section-w3ls" >
+                <input type="radio" name="sections" id="option1" checked>
+                <label for="option1" class="icon-left-w3pvt" style="padding-bottom: 95px;"><span class="fa fa-user-circle" aria-hidden="true"></span>登录</label>
+                <article>
+                    <form action="${pageContext.request.contextPath}/login/form" method="post">
+                        <h3 class="legend">账号登录</h3>
+                        <div class="input">
+                            <input type="text" name="username">
+                        </div>
+                        <div class="input">
+                            <span class="fa fa-key" aria-hidden="true"></span>
+                            <input type="password" v-model="logindata.password" placeholder="密码" name="password" required />
+                        </div>
+                        <button type="submit" class="btn submit">登 录</button>
+                        <a href="#" class="bottom-text-w3ls">忘记密码?</a>
+                    </form>
+                </article>
+            </div>
+
+            <div id="section3" class="section-w3ls" >
+                <input type="radio" name="sections" id="option3">
+                <label for="option3" class="icon-left-w3pvt" style="padding-bottom: 95px;"><span class="fa fa-lock" aria-hidden="true"></span>忘记密码?</label>
+                <article>
+                    <form action="#" method="post">
+                        <h3 class="legend last">重置密码</h3>
+                        <p class="para-style">请在下面输入您的电子邮件地址，我们将给您发送一封带有说明的电子邮件。</p>
+                        <p class="para-style-2"><strong>需要帮助?</strong>了解更多关于如何 <a href="#"></a></p>
+                        <div class="input">
+                            <span class="fa fa-envelope-o" aria-hidden="true"></span>
+                            <input type="email" v-model="forgetdata.email" placeholder="邮箱" name="email" required />
+                        </div>
+                        <button type="submit" class="btn submit last-btn">提交</button>
+                    </form>
+                </article>
+            </div>
+        </div>
+        <!-- //vertical tabs -->
+        <div class="clear"></div>
     </div>
+    <!-- copyright -->
+    <div class="copyright">
+        <h2>Copyright &copy; 2019 - {{nowYear}} 版权所有| by
+            <a href="#">ChanKwongwing</a>
+        </h2>
+    </div>
+    <!-- //copyright -->
 </div>
 </body>
+
 </html>

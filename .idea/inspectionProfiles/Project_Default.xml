@@ -1,6 +1,8 @@
 <component name="InspectionProjectProfileManager">
   <profile version="1.0">
     <option name="myName" value="Project Default" />
+    <inspection_tool class="AsyncMethodInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="DuplicatedBeanNamesInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="TOP_LEVEL_CLASS_OPTIONS">
         <value>
@@ -32,5 +34,53 @@
       <option name="IGNORE_POINT_TO_ITSELF" value="false" />
       <option name="myAdditionalJavadocTags" value="date,create" />
     </inspection_tool>
+    <inspection_tool class="MVCPathVariableInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="MissingAspectjAutoproxyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="ScheduledMethodInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringAopWarningsInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBeanAttributesInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBeanNameConventionInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBootApplicationProperties" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBootApplicationYaml" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBootBootstrapConfigurationInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringBootReactorHooksOnDebug" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringCacheAnnotationsOnInterfaceInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringCacheNamesInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringCacheableAndCachePutInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringCloudStreamInconsistencyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringCloudStreamMessageChannelInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringDataMethodInconsistencyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringDataRepositoryMethodParametersInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringDataRepositoryMethodReturnTypeInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringElInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringElStaticFieldInjectionInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringEventListenerInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringFacetCodeInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringFacetInspection" enabled="true" level="ERROR" enabled_by_default="true">
+      <option name="checkTestFiles" value="false" />
+    </inspection_tool>
+    <inspection_tool class="SpringFacetProgrammaticInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringImportResource" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringInactiveProfileHighlightingInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringInjectionValueStyleInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringIntegrationDeprecations21" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringIntegrationMethodEndpointInconsistency" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringJavaAutowiredFieldsWarningInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringJavaAutowiredMembersInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringJavaConfigExternalBeansErrorInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringJavaStaticMembersAutowiringInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringMVCViewInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringPlaceholdersInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringPropertySource" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringPublicFactoryMethodInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringSecurityDebugActivatedInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringSecurityFiltersConfiguredInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringTestingDirtiesContextInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringTestingSqlInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringTestingTransactionalInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringWebServiceAnnotationsInconsistencyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="SpringXmlAutowireExplicitlyInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnparsedCustomBeanInspection" enabled="true" level="ERROR" enabled_by_default="true" />
+    <inspection_tool class="UnresolvedMessageChannel" enabled="true" level="ERROR" enabled_by_default="true" />
   </profile>
 </component>

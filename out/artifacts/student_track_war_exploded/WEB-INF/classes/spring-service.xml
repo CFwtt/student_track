@@ -11,8 +11,12 @@
     <context:component-scan base-package="cn.edu.hcnu.service" />
 
     <!--StudentServiceImpl注入到IOC容器中-->
-    <bean id="StudentServiceImpl" class="cn.edu.hcnu.service.StudentServiceImpl">
+    <bean id="studentServiceImpl" class="cn.edu.hcnu.service.StudentServiceImpl">
         <property name="studentMapper" ref="studentMapper"/>
+    </bean>
+    <!--StudentServiceImpl注入到IOC容器中-->
+    <bean id="userServiceImpl" class="cn.edu.hcnu.service.UserServiceImpl">
+        <property name="userMapper" ref="userMapper"/>
     </bean>
 
     <!-- 配置事务管理器 -->

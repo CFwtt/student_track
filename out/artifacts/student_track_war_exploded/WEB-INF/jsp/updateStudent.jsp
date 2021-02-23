@@ -87,7 +87,7 @@
                     success: function (data) {
                         var obj = eval("(" + data + ")")
                         if(obj.Code===1){alert("修改成功！")
-                            location.href="${pageContext.request.contextPath}/index.jsp";
+                            location.href="../../index.jsp";
                         }else{alert("修改失败！Code:"+obj.Code)}
                     }
                 })

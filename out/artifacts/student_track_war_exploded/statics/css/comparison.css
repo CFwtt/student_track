@@ -1,7 +1,8 @@
+
 .background{
     background-color: rgb(240,242,245);
     width: 100%;
-    height: 1080px;
+    height: 100%;
 }
 td,ul{
     list-style-type: none;
@@ -17,9 +18,9 @@ a:hover{
     text-decoration: none;
 }
 /*修改container的最大宽度为1700*/
-@media screen and (min-width: 1280px){
+@media screen and (min-width: 1600px){
     .container{
-        width: 1700px;
+        width: 1600px;
     }
 }
 .container{
@@ -29,23 +30,32 @@ a:hover{
 /*顶部导航栏*/
 .header{
     width: 100%;
-    height: 55px;
-    background-color: white;
-}
-.logo{
-    width: 25%;
-    float: left;
+    height: 65px;
     background-color: rgb(26,140,255);
 }
+.header .top-content{
+    margin-left: auto;
+    margin-right: auto;
+    width: 87%;
+    height: 100%;
 
-.logo img{
-    width: 100%;
 }
 
-.loin{
-    width: 70%;
-    float: right;
+.logoInfo img{
+    float: left;
+    height: 65px!important;
+    max-width: 100%;
 }
+/*进入超小屏幕，隐藏log，改为显示字*/
+.logoInfo span{
+    display: block;
+    height: 64px;
+    line-height: 64px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
 
 /*左边导航栏*/
 .left{
@@ -53,7 +63,7 @@ a:hover{
     padding-right: 0px!important;
 }
 .nav{
-    padding-left: 25px;
+    padding-left: 15%;
     background-color:white;
 }
 .nav a{
@@ -61,6 +71,7 @@ a:hover{
     height: 50px;
     line-height: 50px;
     font-size: 15px;
+    width: 80px;
 }
 .nav a:hover{
     color: rgb(26,140,255);
@@ -69,6 +80,79 @@ a:hover{
     vertical-align: middle;
     padding-right: 5px;
 }
+/*当进入小屏幕，li浮动显示*/
+@media screen and (max-width:991px){
+    html{
+        width:100% !important;
+        height: 100% !important;
+
+    }
+    .newDateFont{
+        padding-left: 8px;
+        font-size: 17px!important;
+    }
+    .container{
+        padding:0;
+        margin: 0;
+    }
+    /*.left{*/
+    /*    padding-left: 18px!important;*/
+    /*}*/
+    .nav{
+        width: 100%;
+        padding-left: 30px;
+    }
+    .nav li{
+        float: left;
+        width: 90px;
+
+    }
+    .nav li a{
+        font-size: 7px;
+        padding: 0;
+    }
+    .top-content{
+        height: 80px!important;
+    }
+    .top-content ul li{
+        font-size: 14px!important;
+        padding-top: 15px!important;
+        height: 75px!important;
+    }
+    .right{
+        padding-left: 17px!important;
+        padding-bottom: 0!important;
+    }
+    .right-top{
+        font-size: 14px!important;
+    }
+    .right-bottom{
+        margin-top: 2px!important;
+    }
+    .right-bottom .inputSno{
+        padding-top: 10px!important;
+        width: 318px!important;
+    }
+
+    .right-bottom-table{
+        width: 100%!important;
+    }
+    .right-bottom-table tr th,td{
+        font-size: 8px!important;
+        padding-right: 1px;
+        padding-left: 0!important;
+
+    }
+    .Page ul{
+        float: right;
+        padding-left: 50px;
+        width: 281px!important;
+    }
+    .Page nav{
+        padding-right: 20% !important;
+    }
+}
+
 /*右边内容*/
 .right{
     padding-left: 25px;
@@ -78,13 +162,36 @@ a:hover{
     font-size:18px;
     background-color: white;
 }
-.right .top-content td{
-
-    height: 100px;
+.right .top-content{
+    width: 100%;
+}
+.right .top-content li{
+    height: 90px;
+    float: left;
     background-color: white;
+    padding-top: 10px;
+    margin-top: 0px;
     width: 33.33%;
-    font-size: 15px;
     text-align: center;
+    vertical-align: middle!important;
+    font-size: 20px;
+}
+.right .top-content a{
+    display: block;
+    height: 40px;
+}
+
+.right-bottom{
+    padding-bottom: 90px;
+    margin-top: 113px;
+    background-color: white;
+}
+.right-bottom-table td,th{
+    text-align: center;
+    vertical-align: middle!important;
+    border: none!important;
+    line-height: 40px!important;
+    font-size: 16px;
 
 }
 
