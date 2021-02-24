@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -167,7 +168,7 @@
                                         <input id="CheckVal" style="width: 297px" type="text" class="form-control" placeholder="请输入姓名或学号查找">
                                     </div>
                                 </div>
-
+                            </td>
                         </tr>
                         <tr style="border-bottom: 1px solid rgb(240,242,245)">
                             <th style="width: 14%">姓名</th>
@@ -179,7 +180,10 @@
                             <th>详情</th>
                         </tr>
                         </thead>
+                        <tr>
+                            <c:forEach items="" var="">
 
+                            </c:forEach>
                         </tr>
                         </tbody>
                     </table>
