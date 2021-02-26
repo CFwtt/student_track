@@ -11,7 +11,7 @@ import java.util.List;
  * @Author CF
  * @create 2021/1/30 17:31
  */
-@Service
+
 public class StudentServiceImpl implements StudentService {
 
     @Autowired
@@ -36,8 +36,8 @@ public class StudentServiceImpl implements StudentService {
         return null;
     }
 
-    public List<Student> queryAllStudnet() {
-        return null;
+    public List<Student> queryAllStudent() {
+        return studentMapper.queryAllStudent();
     }
 
 }

@@ -1,9 +1,11 @@
 package cn.edu.hcnu.controller;
 
 
+import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
+@RequestMapping(value = "/main")
 public class ListController {
 
     //controller 调 service 层
@@ -27,6 +32,14 @@ public class ListController {
     @Autowired
     public void setStudentService(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @RequestMapping(value = "/toMain")
+    public String toMain(){
+        Model model = null;
+        List<Student> students = studentService.queryAllStudent();
+        model.addAttribute("students",students);
+        return "redirect:/comparisonRecord1";
     }
 
     /**
@@ -55,10 +68,19 @@ public class ListController {
         return "addStudent";
     }
 
-    @RequestMapping("/toComparison")
-    public String toComparison(Model model){
-        model.addAttribute("mainright", "/WEB-INF/jsp/comparisonRecord1.jsp");
-        return "comparisonRecord";
+    /**
+    * @author CF
+    * @Description 跳转到人员搜索页面
+    * @Date 13:52 2021/2/25
+    * @Param [model]
+    * @return java.lang.String
+    */
+    @RequestMapping(value = "/allStudent")
+    @ResponseBody
+    public List<Student> toComparison(){
+        List<Student> students = studentService.queryAllStudent();
+        System.out.println(students);
+        return students;
     }
 
 

@@ -10,21 +10,19 @@ public class Student {
     private String sno;
     private String major;
     private String grade;
-    private String stu_cell;
-    private String parent_cell;
+    private String s_college;
 
     public Student(){
 
     }
 
-    public Student(String name, String sex, String sno, String major, String grade, String stu_cell, String parent_cell) {
+    public Student(String name, String sex, String sno, String major, String grade, String s_college) {
         this.name = name;
         this.sex = sex;
         this.sno = sno;
         this.major = major;
         this.grade = grade;
-        this.stu_cell = stu_cell;
-        this.parent_cell = parent_cell;
+        this.s_college = s_college;
     }
 
     public String getName() {
@@ -67,19 +65,11 @@ public class Student {
         this.grade = grade;
     }
 
-    public String getStu_cell() {
-        return stu_cell;
+    public String getS_college() {
+        return s_college;
     }
 
-    public void setStu_cell(String stu_cell) {
-        this.stu_cell = stu_cell;
-    }
-
-    public String getParent_cell() {
-        return parent_cell;
-    }
-
-    public void setParent_cell(String parent_cell) {
-        this.parent_cell = parent_cell;
+    public void setS_college(String s_college) {
+        this.s_college = s_college;
     }
 }

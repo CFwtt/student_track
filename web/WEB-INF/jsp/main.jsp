@@ -143,7 +143,7 @@
             <div class="col-sm-1 left">
                 <div class="nav">
                     <ul>
-                        <li><a id="a1" href="#" class="glyphicon glyphicon-camera">人员搜索</a></li>
+                        <li><a id="a1" href="${pageContext.request.contextPath}/allStudent" class="glyphicon glyphicon-camera">人员搜索</a></li>
                         <li><a href="#" class="glyphicon glyphicon-user">人员验证</a></li>
                         <li><a href="#" class="glyphicon glyphicon-folder-open">人库管理</a></li>
                         <li><a href="#" class="glyphicon glyphicon-facetime-video">基础设置</a></li>

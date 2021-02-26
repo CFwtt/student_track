@@ -8,27 +8,48 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<%--    <!--[if lt IE 9]>--%>
-<%--    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>--%>
-<%--    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>--%>
-<%--    <![endif]-->--%>
 
-<%--    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>--%>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
 
-<%--    &lt;%&ndash;时间选择控件&ndash;%&gt;--%>
-<%--    <link href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css" rel="stylesheet">--%>
-<%--    <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.min.js"></script>--%>
-<%--    <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.zh-CN.js"></script>--%>
+    <%--时间选择控件--%>
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
-<%--    <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">--%>
-<%--    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>--%>
-<%--    <link href="${pageContext.request.contextPath}/css/comparison.css" rel="stylesheet">--%>
-
-
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
 
     <script>
 
         $(function () {
+
+            $(document).ready(function(){
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/main/allStudent",
+                    type: "post",
+                    contentType: "application/json;charset=UTF-8",
+                    success: function(data) {
+                        var startDate = $("startDate").val();
+                        var endDate = $("endDate").val();
+                        console.log(startDate+" "+endDate);
+                        tableContent1="";
+                        if(data.length>0){
+                            for (var k=0;k<data.length-1;k++){
+                                tableContent1 += '<tr><td>' + data[k].name + '</td>';
+                                tableContent1 += '<td>' + data[k].sex + '</td>';
+                                tableContent1 += '<td>' + data[k].sno + '</td>';
+                                tableContent1 += '<td>' + data[k].grade + '</td>';
+                                tableContent1 += '<td>' + data[k].major + '</td>';
+                                tableContent1 += '<td>' + data[k].s_college + '</td>';
+                                tableContent1 += '<td><button id="btn" type="button" class="btn btn-info">详情</button></td></tr>';
+
+                            } $("#content").append(tableContent1);
+                        }
+                    }
+                })
+
+            });
 
             $('body').css("overflow-x","hidden");
             $('body').css("height","870px")
@@ -46,7 +67,7 @@
                 autoclose: true,
             });
 
-            $("#CheckVal").keyup(function () {
+            $("#btn").keyup(function () {
                 $("table>tbody>tr")
                     .hide()
                     .filter(":contains('" + ($(this).val()) + "')")
@@ -142,9 +163,8 @@
 
          <div class="right-bottom">
                     <table class="table table-condensed table-layout: fixed text-center right-bottom-table">
-                        <tbody>
-
-                        <thead>
+                        <tbody >
+                        <thead id="content">
                         <tr>
                             <td colspan="6">
                                 <div class="col-sm-4 col-xs-6 right-bottom-start">
@@ -176,15 +196,11 @@
                             <th style="width: 15%">学号</th>
                             <th style="width: 10%">年级</th>
                             <th style="width: 16%">专业</th>
-                            <th style="width: 18%">抓拍时间</th>
-                            <th>详情</th>
+                            <th style="width: 16%">二级学院</th>
+                            <th style="width: 18%">详情</th>
                         </tr>
                         </thead>
-                        <tr>
-                            <c:forEach items="" var="">
 
-                            </c:forEach>
-                        </tr>
                         </tbody>
                     </table>
                     <div class="Page" style="background-color: white">

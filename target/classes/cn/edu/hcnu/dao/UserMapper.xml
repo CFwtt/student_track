@@ -5,8 +5,8 @@
 <mapper namespace="cn.edu.hcnu.dao.UserMapper">
     <!--增加一个用户-->
     <insert id="addUser" parameterType="User">
-      insert into student_track.user(username,password,identity)
-      values (#{username}, #{password}, #{identity})
+      insert into student_track.user(username,password)
+      values (#{username}, #{password})
    </insert>
 
     <!--根据id删除一个用户-->
@@ -17,7 +17,7 @@
     <!--修改用户-->
     <update id="updateUser" parameterType="User">
       update student_track.student_info
-      set username = #{username},password = #{password},identity =#{identity}
+      set username = #{username},password = #{password}
       where id = #{id}
    </update>
 

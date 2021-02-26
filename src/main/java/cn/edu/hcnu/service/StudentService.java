@@ -22,5 +22,5 @@ public interface StudentService {
     Student queryStudentBysno(String sno);
 
     //查询全部学生
-    List<Student> queryAllStudnet();
+    List<Student> queryAllStudent();
 }

@@ -1,15 +1,22 @@
 package cn.edu.hcnu.controller;
 
+import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.pojo.User;
+import cn.edu.hcnu.service.StudentService;
 import cn.edu.hcnu.service.UserService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @Author CF
@@ -18,6 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
+
+
+    @Qualifier("studentServiceImpl")
+    private StudentService studentService;
 
 
     @Qualifier("userServiceImpl")
@@ -35,12 +46,20 @@ public class LoginController {
     * @return
     */
     @SneakyThrows
-    @RequestMapping(value = "/form")
-    public void LoginInfo(String username, String password, HttpServletRequest request, HttpServletResponse response){
-        User user = userService.findByAccountAndPass(username,password);
-        if (user!=null){
-            request.getRequestDispatcher("/WEB-INF/jsp/comparisonRecord.jsp").forward(request, response);
-        }
+    @RequestMapping(value = "/doLogin",method = RequestMethod.POST)
+    public String login(HttpServletRequest request,Model model,
+                        @RequestParam("username")String username,
+                        @RequestParam("password")String password
+    ){
+        User user = userService.findByAccountAndPass(username, password);
+        if (user!=null && user.getPassword().equals(password)){
+           return "main";
+
+        }else {
+            request.setAttribute("wrongMsg","用户名密码错误");
+            request.getSession().setAttribute("wrongMsg","用户名密码错误");
+            return "redirect:/login";
+    }
     }
 
 

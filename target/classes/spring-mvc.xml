@@ -23,8 +23,11 @@
         <property name="suffix" value=".jsp" />
     </bean>
 
+
+    <mvc:view-controller path="/" view-name="login"/>
+    <mvc:view-controller path="login" view-name="login"/>
     <!-- 4.扫描web相关的bean -->
-    <context:component-scan base-package="cn.edu.hcnu.controller" />
+    <context:component-scan base-package="cn.edu.hcnu" />
 
 
 </beans>

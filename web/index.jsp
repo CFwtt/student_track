@@ -1,87 +1,163 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>登录</title>
-    <!-- Meta tag Keywords -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8" />
-    <meta name="keywords" content="Triple Forms Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
+    <title>测试JSON交互</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+    <%--时间选择控件--%>
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
+
+
+
     <script>
-        addEventListener("load", function () {
-            setTimeout(hideURLbar, 0);
-        }, false);
 
-        function hideURLbar() {
-            window.scrollTo(0, 1);
-        }
+        $(function () {
+
+            $('body').css("overflow-x","hidden");
+            $('body').css("height","870px")
+
+            $("#datetimeStart").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            });
+            $("#datetimeEnd").datetimepicker({
+                format: 'yyyy-mm-dd',
+                minView: 'month',
+                language: 'zh-CN',
+                autoclose: true,
+            });
+
+            $("#CheckVal").keyup(function () {
+                $("table>tbody>tr")
+                    .hide()
+                    .filter(":contains('" + ($(this).val()) + "')")
+                    .show();
+            });
+
+            $("#check").click(function () {
+
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/testJson1",
+                    type: "post",
+                    data: JSON.stringify({
+                        "Name": "personListRequest",
+                        "Data":
+                            {
+                                "Action": "getPersonList",
+                                "PersonType": 2,
+                                "PageNo": 1,
+                                "PageSize": 1000
+                            }
+                    }),
+                    contentType: "application/json;charset=UTF-8",
+                    success: function (data) {
+                        var obj = eval("(" + data + ")");
+                        $.each(obj.Data.PersonList, function (key, value) {
+                            needID(value.PersonId);
+                        })
+
+                    }
+                })
+
+                function needID(sno) {
+                    $.ajax({
+                        url: "${pageContext.request.contextPath }/testJson1",
+                        type: "post",
+                        data: JSON.stringify({
+                            "Name": "personListRequest",
+                            "Data":
+                                {
+                                    "Action": "getPerson",
+                                    "PersonType": 2,
+                                    "PersonId": sno,
+                                    "GetPhoto": 1
+                                }
+                        }),
+                        contentType: "application/json;charset=UTF-8",
+                        success: function (data) {
+                            var obj = eval("(" + data + ")");
+                            tableContent = "";
+                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
+                            var name = obj.Data.PersonInfo.PersonName;
+                            var sex = obj.Data.PersonInfo.Sex;
+                            if (sex === 1) {
+                                sex = "男"
+                            } else {
+                                sex = "女"
+                            }
+                            ;
+                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
+                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
+                            var stu_cell = obj.Data.PersonInfo.Phone;
+                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
+
+                            tableContent += '<tr><td>' + name + '</td>';
+                            tableContent += '<td>' + sex + '</td>';
+                            tableContent += '<td>' + sno + '</td>';
+                            tableContent += '<td>' + major + '</td>';
+                            tableContent += '<td>' + grade + '</td></tr>';
+
+                            $("tbody").append(tableContent);
+                            // });
+
+                        }
+                    })
+                }
+
+            });
+
+        });
     </script>
-    <!-- Meta tag Keywords -->
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/statics/css/style.css" type="text/css" media="all" />
-    <link href="${pageContext.request.contextPath}/statics/css/font-awesome.min.css" rel="stylesheet">
-
-</head>
 
 <body>
-<div class="main-bg" id="mian">
-    <!-- title -->
-    <h1>人脸识别分析系统</h1>
-    <!-- //title -->
-    <div class="sub-main-w3">
-        <div class="image-style" style="width: 110px">
+<div class="header">
+    <div class="top-content">
+        <div class="logoInfo">
+            <img class="hidden-xs" src="${pageContext.request.contextPath}/statics/img/logo.png">
+            <span class="visible-xs">学生轨迹查询</span>
         </div>
-        <!-- vertical tabs -->
-        <div class="vertical-tab">
-            <div id="section1" class="section-w3ls" >
-                <input type="radio" name="sections" id="option1" checked>
-                <label for="option1" class="icon-left-w3pvt" style="padding-bottom: 95px;"><span class="fa fa-user-circle" aria-hidden="true"></span>登录</label>
-                <article>
-                    <form action="${pageContext.request.contextPath}/login/form" method="post">
-                        <h3 class="legend">账号登录</h3>
-                        <div class="input">
-                            <input type="text" name="username">
-                        </div>
-                        <div class="input">
-                            <span class="fa fa-key" aria-hidden="true"></span>
-                            <input type="password" v-model="logindata.password" placeholder="密码" name="password" required />
-                        </div>
-                        <button type="submit" class="btn submit">登 录</button>
-                        <a href="#" class="bottom-text-w3ls">忘记密码?</a>
-                    </form>
-                </article>
-            </div>
+    </div>
+</div>
 
-            <div id="section3" class="section-w3ls" >
-                <input type="radio" name="sections" id="option3">
-                <label for="option3" class="icon-left-w3pvt" style="padding-bottom: 95px;"><span class="fa fa-lock" aria-hidden="true"></span>忘记密码?</label>
-                <article>
-                    <form action="#" method="post">
-                        <h3 class="legend last">重置密码</h3>
-                        <p class="para-style">请在下面输入您的电子邮件地址，我们将给您发送一封带有说明的电子邮件。</p>
-                        <p class="para-style-2"><strong>需要帮助?</strong>了解更多关于如何 <a href="#"></a></p>
-                        <div class="input">
-                            <span class="fa fa-envelope-o" aria-hidden="true"></span>
-                            <input type="email" v-model="forgetdata.email" placeholder="邮箱" name="email" required />
-                        </div>
-                        <button type="submit" class="btn submit last-btn">提交</button>
-                    </form>
-                </article>
+<div class="background">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-1 left">
+                <div class="nav">
+                    <ul>
+                        <li><a id="a1" href="${pageContext.request.contextPath}/allStudent" class="glyphicon glyphicon-camera">人员搜索</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-user">人员验证</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-folder-open">人库管理</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-facetime-video">基础设置</a></li>
+                        <li><a href="#" class="glyphicon glyphicon-wrench hidden-xs">账号权限</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-11 right">
+                <jsp:include page="${mainright==null?'comparisonRecord1.jsp':mainright}"></jsp:include>
             </div>
         </div>
-        <!-- //vertical tabs -->
-        <div class="clear"></div>
     </div>
-    <!-- copyright -->
-    <div class="copyright">
-        <h2>Copyright &copy; 2019 - {{nowYear}} 版权所有| by
-            <a href="#">ChanKwongwing</a>
-        </h2>
-    </div>
-    <!-- //copyright -->
+</div>
+
 </div>
 </body>
-
 </html>
