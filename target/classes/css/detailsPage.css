@@ -81,7 +81,7 @@ a:hover{
     padding-right: 5px;
 }
 /*当进入小屏幕，li浮动显示*/
-@media screen and (max-width:991px){
+@media screen and (max-width:750px){
     html{
         width:100% !important;
         height: 100% !important;
@@ -130,7 +130,7 @@ a:hover{
     .right-bottom{
         margin-top: 2px!important;
     }
-    .right-bottom .inputSno{
+    .right-bottom-table .inputSno{
         padding-top: 10px!important;
         width: 318px!important;
     }
@@ -153,6 +153,7 @@ a:hover{
         padding-right: 20% !important;
     }
 }
+
 
 /*右边内容*/
 .right{
@@ -181,6 +182,7 @@ a:hover{
     display: block;
     height: 40px;
 }
+
 
 .right-bottom{
     padding-bottom: 90px;

@@ -21,7 +21,7 @@
 
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/comparison1.css" rel="stylesheet">
 
 
 

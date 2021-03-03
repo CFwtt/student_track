@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+    <%--时间选择控件--%>
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
+
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/statics/css/detailsPage.css" rel="stylesheet">
+
+    <script>
+        $(function () {
+            $("#datetimeStart").datetimepicker({
+                format: 'yyyy-mm-dd HH:mm',
+                language: 'zh-CN',
+                startDate:new Date(),
+                autoclose: true,
+            });
+            $('#datetimeStart').datetimepicker('update', '' + startDate + '');
+            $("#datetimeEnd").datetimepicker({
+                format: 'yyyy-mm-dd HH:mm',
+                language: 'zh-CN',
+                autoclose: true,
+            });
+            $('#datetimeEnd').datetimepicker('update', '' + endDate + '');
+        });
+
+    </script>
+</head>
+<body>
+<div class="col-sm-4 col-xs-6 right-bottom-start">
+    <div class="input-group date" id="datetimeStart">
+        <input class="hidden startDate" value="${startDate}"/>
+        <input id="startDate" type="text" class="form-control" value="" placeholder="起始时间"/>
+        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+    </div>
+</div>
+<div class="col-sm-4 col-xs-6 right-bottom-end">
+    <div class="input-group date" id="datetimeEnd">
+        <input class="hidden endDate" value="${endDate}"/>
+        <input id="endDate" type="text" class="form-control" value="" placeholder="最终时间"/>
+        <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span></span>
+    </div>
+</div>
+</body>
+</html>

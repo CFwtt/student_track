@@ -47,7 +47,7 @@ public class LoginController {
     */
     @SneakyThrows
     @RequestMapping(value = "/doLogin",method = RequestMethod.POST)
-    public String login(HttpServletRequest request,Model model,
+    public String login(HttpServletRequest request,
                         @RequestParam("username")String username,
                         @RequestParam("password")String password
     ){

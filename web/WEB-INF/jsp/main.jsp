@@ -12,7 +12,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.min.js"></script>
 
     <%--时间选择控件--%>
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
@@ -32,18 +32,18 @@
             $('body').css("overflow-x","hidden");
             $('body').css("height","870px")
 
-            $("#datetimeStart").datetimepicker({
-                format: 'yyyy-mm-dd',
-                minView: 'month',
-                language: 'zh-CN',
-                autoclose: true,
-            });
-            $("#datetimeEnd").datetimepicker({
-                format: 'yyyy-mm-dd',
-                minView: 'month',
-                language: 'zh-CN',
-                autoclose: true,
-            });
+            // $("#datetimeStart").datetimepicker({
+            //     format: 'yyyy-mm-dd',
+            //     minView: 'month',
+            //     language: 'zh-CN',
+            //     autoclose: true,
+            // });
+            // $("#datetimeEnd").datetimepicker({
+            //     format: 'yyyy-mm-dd',
+            //     minView: 'month',
+            //     language: 'zh-CN',
+            //     autoclose: true,
+            // });
 
             $("#CheckVal").keyup(function () {
                 $("table>tbody>tr")

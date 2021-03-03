@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <script src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.min.js"></script>
 
     <%--时间选择控件--%>
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
@@ -24,6 +24,9 @@
 
         $(function () {
 
+            /*
+            加载页面第一时间从数据库拉取数据展示到页面
+             */
             $(document).ready(function(){
                 $.ajax({
                     url: "${pageContext.request.contextPath }/main/allStudent",
@@ -42,7 +45,7 @@
                                 tableContent1 += '<td>' + data[k].grade + '</td>';
                                 tableContent1 += '<td>' + data[k].major + '</td>';
                                 tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                tableContent1 += '<td><button type="button" class="btn btn-info">详情</button></td></tr>';
+                                tableContent1 += '<td><button  type="submit" class="btn btn-info btn1">详情</button></td></tr>';
 
                             } $("#content").append(tableContent1);
                         }
@@ -51,32 +54,56 @@
 
             });
 
-
-
+            /*禁止页面横向拖动*/
             $('body').css("overflow-x","hidden");
             $('body').css("height","870px")
 
+            /*
+            日历控件设置
+            */
             $("#datetimeStart").datetimepicker({
-                format: 'yyyy-mm-dd',
-                minView: 'month',
+                forceParse: 0,
+                showMeridian: 1,
+                todayHighlight: 1,
+                todayBtn:  1,
                 language: 'zh-CN',
                 autoclose: true,
             });
             $("#datetimeEnd").datetimepicker({
-                format: 'yyyy-mm-dd',
-                minView: 'month',
                 language: 'zh-CN',
                 autoclose: true,
             });
+            // var  re = /^\d{10}$/ ;
+            // if (re.test(checkVal)) {      //判断字符是否是10位数字
+            //
+            // }else{
+            //     console.log("这是姓名")
+            // }
 
-            $("#CheckVal").keyup(function () {
-                $("table>tbody>tr")
-                    .hide()
-                    .filter(":contains('" + ($(this).val()) + "')")
-                    .show();
-            });
+            /*
+            为ajax动态生成的Dom元素，添加点击事件
 
-            $("#check").click(function () {
+            $(document).on("click",".btn", function(){
+                var startDate = $("#startDate").val();
+                var endDate = $("#endDate").val();
+                var CheckVal = $("#CheckVal").val();
+
+                var json = {
+                    "startDate" : startDate,
+                    "endDate" : endDate,
+                    "CheckVal":CheckVal
+                };
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/main/toDetails",
+                    type: "post",
+                    data: json,
+                    dataType : 'json',
+                })
+
+            })*/
+
+            $("#btn").click(function () {
+                console.log("666");
 
                 $.ajax({
                     url: "${pageContext.request.contextPath }/testJson1",
@@ -164,47 +191,49 @@
                 </div>
 
          <div class="right-bottom">
-                    <table class="table table-condensed table-layout: fixed text-center right-bottom-table">
-                        <tbody >
-                        <thead id="content">
-                        <tr>
-                            <td colspan="6">
-                                <div class="col-sm-4 col-xs-6 right-bottom-start">
-                                    <div class="input-group date" id="datetimeStart">
-                                        <input id="startDate" type="text" class="form-control" placeholder="起始时间"/>
-                                        <span class="input-group-addon">
+             <form action="${pageContext.request.contextPath }/main/toDetails" method="post" id="form1">
+                 <table class="table table-condensed table-layout: fixed text-center right-bottom-table" >
+             <tbody>
+             <thead id="content">
+                 <tr>
+                     <td colspan="6">
+                         <div class="col-sm-4 col-xs-6 right-bottom-start">
+                             <div class="input-group date" id="datetimeStart">
+                                 <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" name="startDate" id="startDate" type="text" class="form-control" placeholder="起始时间"/>
+                                 <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-xs-6 right-bottom-end">
-                                    <div class="input-group date" id="datetimeEnd">
-                                        <input id="endDate" type="text" class="form-control" placeholder="最终时间"/>
-                                        <span class="input-group-addon">
+                             </div>
+                         </div>
+                         <div class="col-sm-4 col-xs-6 right-bottom-end">
+                             <div class="input-group date" id="datetimeEnd">
+                                 <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" name="endDate" id="endDate" type="text" class="form-control" placeholder="最终时间"/>
+                                 <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span></span>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 col-xs-12 inputSno">
+                             </div>
+                         </div>
+                         <div class="col-sm-4 col-xs-12 inputSno">
 
-                                    <div class="input-group date" >
-                                        <input id="CheckVal" style="width: 297px" type="text" class="form-control" placeholder="请输入姓名或学号查找">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgb(240,242,245)">
-                            <th style="width: 14%">姓名</th>
-                            <th style="width: 8%">性别</th>
-                            <th style="width: 15%">学号</th>
-                            <th style="width: 10%">年级</th>
-                            <th style="width: 16%">专业</th>
-                            <th style="width: 16%">二级学院</th>
-                            <th style="width: 18%">详情</th>
-                        </tr>
-                        </thead>
+                             <div class="input-group date" >
+                                 <input name="CheckVal" id="CheckVal" style="width: 297px" type="text" class="form-control" placeholder="请输入姓名或学号查找">
+                             </div>
+                         </div>
+                     </td>
+                 </tr>
+                 <tr style="border-bottom: 1px solid rgb(240,242,245)">
+                     <th style="width: 14%">姓名</th>
+                     <th style="width: 8%">性别</th>
+                     <th style="width: 15%">学号</th>
+                     <th style="width: 10%">年级</th>
+                     <th style="width: 16%">专业</th>
+                     <th style="width: 16%">二级学院</th>
+                     <th style="width: 18%">详情</th>
+                 </tr>
+                 </thead>
+                 </tbody>
+             </table>
+             </form>
 
-                        </tbody>
-                    </table>
                     <div class="Page" style="background-color: white">
                         <nav style="float: right;padding-right: 43%;" aria-label="Page navigation">
                             <ul style="vertical-align: center" class="pagination">

@@ -3,6 +3,7 @@ package cn.edu.hcnu.controller;
 
 import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
+import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
@@ -17,15 +18,23 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 @RequestMapping(value = "/main")
 public class ListController {
 
-    //controller 调 service 层
-
+    /**
+     * @author CF
+     * @Description 控制层调用服务层
+     * @Date 15:29 2021/2/27
+     * @Param
+     * @return
+     */
     @Qualifier("studentServiceImpl")
     private StudentService studentService;
 
@@ -34,53 +43,55 @@ public class ListController {
         this.studentService = studentService;
     }
 
-    @RequestMapping(value = "/toMain")
-    public String toMain(){
-        Model model = null;
-        List<Student> students = studentService.queryAllStudent();
-        model.addAttribute("students",students);
-        return "redirect:/comparisonRecord1";
-    }
-
     /**
-    * @author CF
-    * @Description 跳转到修改页面并把当前学号传过去
-    * @Date 17:38 2021/2/15
-    * @Param [sno, model]
-    * @return java.lang.String
-    */
-    @RequestMapping(value = "/toUpdate/{sno}", method = RequestMethod.GET)
-    public String selectUser(@PathVariable("sno") String sno,Model model) {
-        model.addAttribute("sno",sno);
-        return "updateStudent";
-    }
-
-
-    /**
-    * @author CF
-    * @Description 跳转到添加页面
-    * @Date 17:40 2021/2/15
-    * @Param []
-    * @return java.lang.String
-    */
-    @RequestMapping("/toAddStudeent")
-    public String toAddPaPer() {
-        return "addStudent";
-    }
-
-    /**
-    * @author CF
-    * @Description 跳转到人员搜索页面
-    * @Date 13:52 2021/2/25
-    * @Param [model]
-    * @return java.lang.String
-    */
+     * @return java.lang.String
+     * @author CF
+     * @Description 登录成功后的页面, 用ajax发送请求到此控制器，拉取全部学生信息
+     * @Date 13:52 2021/2/25
+     * @Param [model]
+     */
     @RequestMapping(value = "/allStudent")
     @ResponseBody
-    public List<Student> toComparison(){
+    public List<Student> toComparison() {
         List<Student> students = studentService.queryAllStudent();
         System.out.println(students);
         return students;
+    }
+
+
+    /**
+     * @return java.lang.String
+     * @author CF
+     * @Description 跳转到详细页面，并根据时间段和条件查询
+     * @Date 17:38 2021/2/15
+     * @Param [sno, model]
+     */
+    @SneakyThrows
+    @RequestMapping(value = "/toDetails")
+    @ResponseBody
+    public void selectUser(HttpServletRequest request, HttpServletResponse response,
+                           @RequestParam("startDate") String startDate,
+                           @RequestParam("endDate") String endDate,
+                           @RequestParam("CheckVal") String CheckVal) {
+        System.out.println(startDate);
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("CheckVal", CheckVal);
+        request.setAttribute("mainright", "/WEB-INF/jsp/detailsPage.jsp");
+        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
+    }
+
+
+    /**
+     * @return java.lang.String
+     * @author CF
+     * @Description 跳转到添加页面
+     * @Date 17:40 2021/2/15
+     * @Param []
+     */
+    @RequestMapping("/toAddStudeent")
+    public String toAddPaPer() {
+        return "addStudent";
     }
 
 
@@ -99,7 +110,7 @@ public class ListController {
         HttpPost httpPost = new HttpPost("http://192.168.0.31:8011");
         CloseableHttpClient client = HttpClients.createDefault();
         String respContent = null;
-        System.out.println("传入中间代理服务器的JSON："+json);
+        System.out.println("传入中间代理服务器的JSON：" + json);
 
         StringEntity entity = new StringEntity(json.toString(), "utf-8");//解决中文乱码问题
         entity.setContentEncoding("UTF-8");
@@ -116,7 +127,6 @@ public class ListController {
         System.out.println("返回的JSON：" + respContent);
         return respContent;
     }
-
 
 
 }

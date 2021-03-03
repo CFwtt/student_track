@@ -5,6 +5,7 @@ package cn.edu.hcnu.pojo;
  * @create 2021/2/12 17:19
  */
 public class Student {
+    private String face;
     private String name;
     private String sex;
     private String sno;
@@ -16,7 +17,8 @@ public class Student {
 
     }
 
-    public Student(String name, String sex, String sno, String major, String grade, String s_college) {
+    public Student(String face, String name, String sex, String sno, String major, String grade, String s_college) {
+        this.face = face;
         this.name = name;
         this.sex = sex;
         this.sno = sno;
@@ -71,5 +73,13 @@ public class Student {
 
     public void setS_college(String s_college) {
         this.s_college = s_college;
+    }
+
+    public String getFace() {
+        return face;
+    }
+
+    public void setFace(String face) {
+        this.face = face;
     }
 }
