@@ -3,6 +3,8 @@ package cn.edu.hcnu.controller;
 
 import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
@@ -110,7 +112,7 @@ public class ListController {
         HttpPost httpPost = new HttpPost("http://192.168.0.31:8011");
         CloseableHttpClient client = HttpClients.createDefault();
         String respContent = null;
-        System.out.println("传入中间代理服务器的JSON：" + json);
+        //System.out.println("传入中间代理服务器的JSON：" + json);
 
         StringEntity entity = new StringEntity(json.toString(), "utf-8");//解决中文乱码问题
         entity.setContentEncoding("UTF-8");
@@ -118,14 +120,36 @@ public class ListController {
         httpPost.setEntity(entity);
 
         HttpResponse resp = client.execute(httpPost);
-
-        //resp.setHeader("Content-Type", "application/json");
         if (resp.getStatusLine().getStatusCode() == 200) {
             HttpEntity he = resp.getEntity();
             respContent = EntityUtils.toString(he, "UTF-8");
         }
-        System.out.println("返回的JSON：" + respContent);
-        return respContent;
+
+
+        String Data = json.get("Data").toString();
+
+
+        JsonParser jp = new JsonParser();
+        //将json字符串转化成json对象
+        JsonObject jo = jp.parse(respContent).getAsJsonObject();
+        String Message = jo.get("Message").getAsString();
+        //截取频道字段，放入盒子返回的json串中
+
+        String ChannelNo = Data.substring(1,15);
+        System.out.println("==========:"+ChannelNo);
+        String str = respContent;
+        StringBuilder sb = new StringBuilder(str);
+        //在指定的位置1，插入指定的字符串
+        sb.insert(1,ChannelNo);
+        str = sb.toString();
+        
+            //System.out.println("\n");
+            //System.out.println("==================================================");
+            //System.out.println("str-----------------------------:"+str);
+            //System.out.println("Message：" + Message);
+            //System.out.println("==================================================");
+            return str;
+
     }
 
 

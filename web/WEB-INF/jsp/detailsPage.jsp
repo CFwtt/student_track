@@ -36,88 +36,20 @@
                 var unixToStart = timestampToTime(startToUnix);
                 var endToUnix = Date.parse(endDate);
                 var unixToEnd = timestampToTime(endToUnix);
-                var unloadDate = startToUnixToEndUnix(startDate, endDate, startToUnix, endToUnix);
 
+                var year = parseInt(startDate.substr(0, 4));
+                var month = parseInt(startDate.substr(5, 2));
+                var day = parseInt(startDate.substr(8, 2));
+                var startHour = parseInt(startDate.substr(10, 3));
+                var startMin = parseInt(startDate.substr(14, 2));
+                var endHour = parseInt(endDate.substr(10, 3));
+                var endMin = parseInt(endDate.substr(14, 2));
+                startToUnixToEndUnix(year, month, day, startHour, startMin, endHour, endMin, startDate, endDate, startToUnix, endToUnix);
 
-                function queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, ListNameID) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/main/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "getFaceCompareRecord",
-                            "Data":
-                                {
-                                    "ChannelNo":ChannelNo,
-                                    "Year":year,
-                                    "Month":month,
-                                    "Day":day,
-                                    "StartHour":startHour,
-                                    "StartMin":startMin,
-                                    "StartSecond":0,
-
-                                    "EndHour":endHour,
-                                    "EndMin":endMin,
-                                    "EndSecond":59,
-                                    "GetPhoto":1,
-                                    "PageNo":4,
-                                    "PageSize":5,
-                                    "Similary":80,
-                                    "CompareNameList":
-                                        {
-                                            "ListNameID": 128
-                                        }
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            console.log(obj.Data.TotalFaceCompareRecordNum);
-                            var totalPage = obj.Data.TotalFaceCompareRecordNum%5;
-                            // console.log("to:"+totalPage)
-                            function C(totalPage) {
-                                var t = totalPage;
-                                return t;
-                            }
-                            return { //返回值对象实质上是一个 我们模块的公有API
-                                C:C
-                            }
-                            //console.log(obj);
-                            /* var startDate = $("startDate").val();
-                             var endDate = $("endDate").val();
-                             tableContent1 = "";
-                             if (data.length > 0) {
-                                 for (var k = 0; k < data.length - 1; k++) {
-                                     tableContent1 += '<tr><td>' + data[k].name + '</td>';
-                                     tableContent1 += '<td>' + data[k].sex + '</td>';
-                                     tableContent1 += '<td>' + data[k].sno + '</td>';
-                                     tableContent1 += '<td>' + data[k].grade + '</td>';
-                                     tableContent1 += '<td>' + data[k].major + '</td>';
-                                     tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                     tableContent1 += '<td><button  type="button">详情</button></td></tr>';
-
-                                 }
-                                 $("#content").append(tableContent1);
-                             }*/
-                        }
-                    })
-
-
-                }
-
-
-                function startToUnixToEndUnix(startDate, endDate, startUnix, endUnix) {
-                    if (startDate.substr(0, 10) === endDate.substr(0, 10)) {
-                        var year = parseInt(startDate.substr(0, 4));
-                        var month = parseInt(startDate.substr(5, 2));
-                        var day = parseInt(startDate.substr(8, 2));
-                        var startHour = parseInt(startDate.substr(10, 3));
-                        var startMin = parseInt(startDate.substr(14, 2));
-                        var endHour = parseInt(endDate.substr(10, 3));
-                        var endMin = parseInt(endDate.substr(14, 2));
-                        var ChannelNo = 0;
-                        var PageNo = 1;
-                        var totalPage = 2;
-
+                //遍历摄像头，获取每个摄像头拍到人脸的总页码
+                function queryTotalPage(year, month, day, startHour, startMin, endHour, endMin) {
+                    console.log("end:"+endHour,endMin)
+                    for (var channelNo = 0; channelNo <= 8; channelNo++) {
                         $.ajax({
                             url: "${pageContext.request.contextPath }/main/testJson1",
                             type: "post",
@@ -125,21 +57,73 @@
                                 "Name": "getFaceCompareRecord",
                                 "Data":
                                     {
-                                        "ChannelNo":ChannelNo,
-                                        "Year":year,
-                                        "Month":month,
-                                        "Day":day,
-                                        "StartHour":startHour,
-                                        "StartMin":startMin,
-                                        "StartSecond":0,
+                                        "ChannelNo": channelNo,
+                                        "Year": year,
+                                        "Month": month,
+                                        "Day": day,
+                                        "StartHour": startHour,
+                                        "StartMin": startMin,
+                                        "StartSecond": 0,
 
-                                        "EndHour":endHour,
-                                        "EndMin":endMin,
-                                        "EndSecond":59,
-                                        "GetPhoto":1,
-                                        "PageNo":4,
-                                        "PageSize":5,
-                                        "Similary":80,
+                                        "EndHour": endHour,
+                                        "EndMin": endMin,
+                                        "EndSecond": 59,
+                                        "GetPhoto": 1,
+                                        "PageNo": 1,
+                                        "PageSize": 5,
+                                        "Similary": 80,
+                                        "CompareNameList":
+                                            {
+                                                "ListNameID": 128
+                                            }
+                                    }
+                            }),
+                            contentType: "application/json;charset=UTF-8",
+                            success: function (data) {
+
+                                var obj = eval("(" + data + ")");
+                                var totalCount = obj.Data.TotalFaceCompareRecordNum;
+                                var temp = totalCount % 5;
+                                var totalPage = temp == 0 ? totalCount / 5 : totalCount / 5 + 1;
+                                var ChannelNo = obj.ChannelNo;
+                                var Message = obj.Message;
+                                console.log("Message:" + Message)
+                                if (GetAsciiCode(Message) == "Get Snap Record Success!") {
+                                    queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, totalPage);
+                                }
+                            }
+                        })
+                    }
+
+                }
+
+                //把总页码传给此函数遍历页码获得每页的回传值
+                function queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, TotalPage) {
+                    var pageNo = 1;
+                    while (pageNo <= TotalPage) {
+                        console.log("ChanneNo"+ChannelNo,"pageNo:"+pageNo)
+                        $.ajax({
+                            url: "${pageContext.request.contextPath }/main/testJson1",
+                            type: "post",
+                            data: JSON.stringify({
+                                "Name": "getFaceCompareRecord",
+                                "Data":
+                                    {
+                                        "ChannelNo": ChannelNo,
+                                        "Year": year,
+                                        "Month": month,
+                                        "Day": day,
+                                        "StartHour": startHour,
+                                        "StartMin": startMin,
+                                        "StartSecond": 0,
+
+                                        "EndHour": endHour,
+                                        "EndMin": endMin,
+                                        "EndSecond": 59,
+                                        "GetPhoto": 1,
+                                        "PageNo": pageNo,
+                                        "PageSize": 5,
+                                        "Similary": 80,
                                         "CompareNameList":
                                             {
                                                 "ListNameID": 128
@@ -149,51 +133,61 @@
                             contentType: "application/json;charset=UTF-8",
                             success: function (data) {
                                 var obj = eval("(" + data + ")");
-                                console.log(obj.Data.TotalFaceCompareRecordNum);
-                                totalPage = obj.Data.TotalFaceCompareRecordNum;
-                                //console.log(obj);
-                                /* var startDate = $("startDate").val();
-                                 var endDate = $("endDate").val();
-                                 tableContent1 = "";
-                                 if (data.length > 0) {
-                                     for (var k = 0; k < data.length - 1; k++) {
-                                         tableContent1 += '<tr><td>' + data[k].name + '</td>';
-                                         tableContent1 += '<td>' + data[k].sex + '</td>';
-                                         tableContent1 += '<td>' + data[k].sno + '</td>';
-                                         tableContent1 += '<td>' + data[k].grade + '</td>';
-                                         tableContent1 += '<td>' + data[k].major + '</td>';
-                                         tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                         tableContent1 += '<td><button  type="button">详情</button></td></tr>';
-
-                                     }
-                                     $("#content").append(tableContent1);
-                                 }*/
+                                var PageNo = obj.Data.PageNo;
+                                $.each(obj.Data.FaceCompareRecordData, function (key, value) {
+                                    console.log("PageNo:" + PageNo);
+                                    console.log("ChannelNo:" + ChannelNo);
+                                    console.log("totalPage:" + TotalPage);
+                                    console.log("obj:" + value.PersonName)
+                                    console.log("==================")
+                                    tableContent1 = "";
+                                    tableContent1 += '<tr><td>' + '抓拍图片' + '</td>';
+                                    tableContent1 += '<td>' + value.PersonName + '</td>';
+                                    tableContent1 += '<td>' + '学号' + '</td>';
+                                    tableContent1 += '<td>' + value.ListName + '</td>';
+                                    tableContent1 += '<td>' + value.CompareTime + '</td>';
+                                    tableContent1 += '<td>' + ChannelNo + '</td>';
+                                    tableContent1 += '<td><button  type="button">详情</button></td></tr>';
+                                    $("#content").append(tableContent1);
+                                })
                             }
                         })
-
-                        while (ChannelNo < 8) {
-                            while (PageNo<totalPage){
-                                console.log("totalPage:"+totalPage);
-
-                                PageNo++;
-                            }
-                            ChannelNo++;
-                        }
-                        //console.log(year,month,day,shour,smin,ehour,emin);
-                        //一天内的接口
-                    } else if (startDate.substr(0, 10) !== endDate.substr(0, 10)) {
-                        //调用一天内的接口、中间时间段接口、最后一天内的接口
-                        for (; startUnix <= endUnix; startUnix += 60 * 60 * 24 * 1000) {
-                            //console.log("unloadDate:" + timestampToTime(startUnix));
-                            var start_year = startDate.substr(0, 4);
-                            var start_month = startDate.substr(5, 2);
-                            var start_day = startDate.substr(8, 2);
-
-                        }
+                        pageNo++;
                     }
-
                 }
 
+                //判断上传的时间段
+                function startToUnixToEndUnix(year, month, day, startHour, startMin, endHour, endMin, startDate1, endDate1, startUnix1, endUnix1) {
+                    if (timestampToTime(startUnix1).substr(0, 10) === timestampToTime(endUnix1).substr(0, 10)) {
+                        queryTotalPage(year, month, day, startHour, startMin, endHour, endMin);
+                        console.log("一天内");
+                    } else {
+                        if (timestampToTime(startUnix1).substr(0, 10) === startDate1.substr(0, 10)) {
+                            queryTotalPage(years, months, days, startHour, startMin, 23, 59);
+                            console.log("第一天");
+
+                        }
+                        startUnix1 += 60 * 60 * 24 * 1000;
+                        for (; ; startUnix1 += 60 * 60 * 24 * 1000) {
+                            //当天的情况下
+                            var Date = timestampToTime(startUnix1);
+                            var years = parseInt(Date.substr(0, 4));
+                            var months = parseInt(Date.substr(5, 2));
+                            var days = parseInt(Date.substr(8, 2));
+
+                            if (timestampToTime(startUnix1).substr(0, 10) === timestampToTime(endUnix1).substr(0, 10)) {
+                                queryTotalPage(years, months, days, 0, 0, endHour, endMin);
+                                console.log("最后一天");
+                                return;
+                            }
+                            queryTotalPage(years, months, days, 0, 0, 23, 59);
+
+                        }
+
+                    }
+                }
+
+                //时间戳转换为日期格式
                 function timestampToTime(timestamp) {
                     var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
                     Y = date.getFullYear() + '-';
@@ -205,100 +199,27 @@
                     return Y + M + D + h + m + s;
                 }
 
-
-                function queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, ListNameID) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/main/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "getFaceCompareRecord",
-                            "Data":
-                                {
-                                    "ChannelNo":ChannelNo,
-                                    "Year":year,
-                                    "Month":month,
-                                    "Day":day,
-                                    "StartHour":startHour,
-                                    "StartMin":startMin,
-                                    "StartSecond":0,
-
-                                    "EndHour":endHour,
-                                    "EndMin":endMin,
-                                    "EndSecond":59,
-                                    "GetPhoto":1,
-                                    "PageNo":4,
-                                    "PageSize":5,
-                                    "Similary":80,
-                                    "CompareNameList":
-                                        {
-                                            "ListNameID": 128
-                                        }
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            console.log(obj.Data.TotalFaceCompareRecordNum);
-                            var totalPage = obj.Data.TotalFaceCompareRecordNum%5;
-                           // console.log("to:"+totalPage)
-                            function C(totalPage) {
-                                var t = totalPage;
-                                return t;
-                            }
-                            return { //返回值对象实质上是一个 我们模块的公有API
-                                C:C
+                //解决ajax返回值无法判断问题。是因为“页面的编码是UTF-8 + BOM”，去掉前面的‘65279’，解决问题
+                function GetAsciiCode(string) {//
+                    var str = string;//接收字符串
+                    var strAscii = new Array();//用于接收ASCII码
+                    for (var i = 0; i < str.length; i++) {
+                        strAscii[i] = str.charCodeAt(i);//把字符串中的字符一个一个的解码
+                    }
+                    var getChar = "";
+                    if (strAscii[0] == 65279) {
+                        for (var j = 1; j < str.length; j++) {
+                            getChar += String.fromCharCode(strAscii[j]);//去掉头一个65279，把ASCII码转换为字符串
                         }
-                            //console.log(obj);
-                            /* var startDate = $("startDate").val();
-                             var endDate = $("endDate").val();
-                             tableContent1 = "";
-                             if (data.length > 0) {
-                                 for (var k = 0; k < data.length - 1; k++) {
-                                     tableContent1 += '<tr><td>' + data[k].name + '</td>';
-                                     tableContent1 += '<td>' + data[k].sex + '</td>';
-                                     tableContent1 += '<td>' + data[k].sno + '</td>';
-                                     tableContent1 += '<td>' + data[k].grade + '</td>';
-                                     tableContent1 += '<td>' + data[k].major + '</td>';
-                                     tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                     tableContent1 += '<td><button  type="button">详情</button></td></tr>';
-
-                                 }
-                                 $("#content").append(tableContent1);
-                             }*/
-                        }
-                    })
-
-
-                }
-
-            });
-
-
-
-
-            $.ajax({
-                url: "${pageContext.request.contextPath }/main/allStudent",
-                type: "post",
-                contentType: "application/json;charset=UTF-8",
-                success: function (data) {
-                    var startDate = $("startDate").val();
-                    var endDate = $("endDate").val();
-                    tableContent1 = "";
-                    if (data.length > 0) {
-                        for (var k = 0; k < data.length - 1; k++) {
-                            tableContent1 += '<tr><td>' + data[k].name + '</td>';
-                            tableContent1 += '<td>' + data[k].sex + '</td>';
-                            tableContent1 += '<td>' + data[k].sno + '</td>';
-                            tableContent1 += '<td>' + data[k].grade + '</td>';
-                            tableContent1 += '<td>' + data[k].major + '</td>';
-                            tableContent1 += '<td>' + data[k].s_college + '</td>';
-                            tableContent1 += '<td><button  type="button">详情</button></td></tr>';
-
-                        }
-                        $("#content").append(tableContent1);
+                        return getChar;
+                    } else {
+                        return str;
                     }
                 }
             })
+
+
+
             /*禁止页面横向拖动*/
             $('body').css("overflow-x", "hidden");
             $('body').css("height", "870px")
@@ -466,12 +387,12 @@
             </td>
         </tr>
         <tr style="border-bottom: 1px solid rgb(240,242,245)">
-            <th style="width: 14%">姓名</th>
-            <th style="width: 8%">性别</th>
+            <th style="width: 14%">抓拍图片</th>
+            <th style="width: 8%">姓名</th>
             <th style="width: 15%">学号</th>
-            <th style="width: 10%">年级</th>
-            <th style="width: 16%">专业</th>
-            <th style="width: 16%">二级学院</th>
+            <th style="width: 10%">名单</th>
+            <th style="width: 16%">时间</th>
+            <th style="width: 16%">抓拍场所</th>
             <th style="width: 18%">详情</th>
         </tr>
         </thead>

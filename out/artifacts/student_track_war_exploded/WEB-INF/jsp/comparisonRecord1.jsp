@@ -62,10 +62,6 @@
             日历控件设置
             */
             $("#datetimeStart").datetimepicker({
-                forceParse: 0,
-                showMeridian: 1,
-                todayHighlight: 1,
-                todayBtn:  1,
                 language: 'zh-CN',
                 autoclose: true,
             });
