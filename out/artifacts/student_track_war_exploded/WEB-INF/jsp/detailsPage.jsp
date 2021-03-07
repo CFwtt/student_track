@@ -31,11 +31,10 @@
             $(document).ready(function () {
                 var startDate = $(".startDate").val();
                 var endDate = $(".endDate").val();
-                var checkVal = $(".CheckVal").val();
+                var sno = $(".sno").val();
                 var startToUnix = Date.parse(startDate);
-                var unixToStart = timestampToTime(startToUnix);
                 var endToUnix = Date.parse(endDate);
-                var unixToEnd = timestampToTime(endToUnix);
+                var username = $(".user_name").val();
 
                 var year = parseInt(startDate.substr(0, 4));
                 var month = parseInt(startDate.substr(5, 2));
@@ -44,15 +43,14 @@
                 var startMin = parseInt(startDate.substr(14, 2));
                 var endHour = parseInt(endDate.substr(10, 3));
                 var endMin = parseInt(endDate.substr(14, 2));
-                var pageNo = 1;
-                startToUnixToEndUnix(year, month, day, startHour, startMin, endHour, endMin, startDate, endDate, startToUnix, endToUnix);
+                startToUnixToEndUnix(username,year, month, day, startHour, startMin, endHour, endMin, startDate, endDate, startToUnix, endToUnix);
 
                 //遍历摄像头，获取每个摄像头拍到人脸的总页码
-                function queryTotalPage(year, month, day, startHour, startMin, endHour, endMin) {
-                    console.log("end:"+endHour,endMin)
+                function queryTotalPage(username,year, month, day, startHour, startMin, endHour, endMin) {
+                    console.log("end:" + endHour, endMin)
                     for (var channelNo = 0; channelNo <= 8; channelNo++) {
                         $.ajax({
-                            url: "${pageContext.request.contextPath }/main/testJson1",
+                            url: "${pageContext.request.contextPath }/Jsonp/jsonp",
                             type: "post",
                             data: JSON.stringify({
                                 "Name": "getFaceCompareRecord",
@@ -70,7 +68,7 @@
                                         "EndMin": endMin,
                                         "EndSecond": 59,
                                         "GetPhoto": 1,
-                                        "PageNo": pageNo,
+                                        "PageNo": 1,
                                         "PageSize": 5,
                                         "Similary": 80,
                                         "CompareNameList":
@@ -90,7 +88,7 @@
                                 var Message = obj.Message;
                                 console.log("Message:" + Message)
                                 if (GetAsciiCode(Message) == "Get Snap Record Success!") {
-                                    queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, totalPage);
+                                    queryRecord(username,year, month, day, startHour, startMin, endHour, endMin, ChannelNo, totalPage);
                                 }
                             }
                         })
@@ -99,12 +97,12 @@
                 }
 
                 //把总页码传给此函数遍历页码获得每页的回传值
-                function queryRecord(year, month, day, startHour, startMin, endHour, endMin, ChannelNo, TotalPage) {
+                function queryRecord(username,year, month, day, startHour, startMin, endHour, endMin, ChannelNo, TotalPage) {
                     var pageNo = 1;
                     while (pageNo <= TotalPage) {
-                        console.log("ChanneNo"+ChannelNo,"pageNo:"+pageNo)
+                        console.log("ChanneNo" + ChannelNo, "pageNo:" + pageNo)
                         $.ajax({
-                            url: "${pageContext.request.contextPath }/main/testJson1",
+                            url: "${pageContext.request.contextPath }/Jsonp/jsonp",
                             type: "post",
                             data: JSON.stringify({
                                 "Name": "getFaceCompareRecord",
@@ -134,22 +132,29 @@
                             contentType: "application/json;charset=UTF-8",
                             success: function (data) {
                                 var obj = eval("(" + data + ")");
-                                var PageNo = obj.Data.PageNo;
+                                console.log("sno:"+sno)
                                 $.each(obj.Data.FaceCompareRecordData, function (key, value) {
-                                    console.log("PageNo:" + PageNo);
-                                    console.log("ChannelNo:" + ChannelNo);
-                                    console.log("totalPage:" + TotalPage);
-                                    console.log("obj:" + value.PersonName)
-                                    console.log("==================")
                                     tableContent1 = "";
-                                    tableContent1 += '<tr><td>' + '抓拍图片' + '</td>';
-                                    tableContent1 += '<td>' + value.PersonName + '</td>';
-                                    tableContent1 += '<td>' + '学号' + '</td>';
-                                    tableContent1 += '<td>' + value.ListName + '</td>';
-                                    tableContent1 += '<td>' + value.CompareTime + '</td>';
-                                    tableContent1 += '<td>' + ChannelNo + '</td>';
-                                    tableContent1 += '<td><button  type="button">详情</button></td></tr>';
-                                    $("#content").append(tableContent1);
+                                    var PersonName = value.PersonName;
+                                    var PersonId = value.PersonId;
+                                    var Similary = value.Similary;
+                                    var CompareTime = value.CompareTime;
+                                    var FacePictureBase64 = value.FacePicture;
+                                    var nowDate = new Date();
+                                    if (GetAsciiCode(value.PersonId)==sno){
+                                        tableContent1 += '<tr><td>' + '抓拍图片' + '</td>';
+                                        tableContent1 += '<td>' + PersonName + '</td>';
+                                        tableContent1 += '<td>' + '学号' + '</td>';
+                                        tableContent1 += '<td>' + value.ListName + '</td>';
+                                        tableContent1 += '<td>' + value.CompareTime + '</td>';
+                                        tableContent1 += '<td>' + ChannelNo + '</td>';
+                                        tableContent1 += '<td><button  type="button">详情</button></td></tr>';
+                                        $("#content").append(tableContent1);
+                                        getQueryRecord(username,PersonName,PersonId,Similary,CompareTime,FacePictureBase64,nowDate);
+                                    }
+                                    else {
+                                        alert("无数据，请重新输入");
+                                    }
                                 })
                             }
                         })
@@ -157,15 +162,14 @@
                     }
                 }
 
-
                 //判断上传的时间段
-                function startToUnixToEndUnix(year, month, day, startHour, startMin, endHour, endMin, startDate1, endDate1, startUnix1, endUnix1) {
+                function startToUnixToEndUnix(username,year, month, day, startHour, startMin, endHour, endMin, startDate1, endDate1, startUnix1, endUnix1) {
                     if (timestampToTime(startUnix1).substr(0, 10) === timestampToTime(endUnix1).substr(0, 10)) {
-                        queryTotalPage(year, month, day, startHour, startMin, endHour, endMin);
+                        queryTotalPage(username,year, month, day, startHour, startMin, endHour, endMin);
                         console.log("一天内");
                     } else {
                         if (timestampToTime(startUnix1).substr(0, 10) === startDate1.substr(0, 10)) {
-                            queryTotalPage(years, months, days, startHour, startMin, 23, 59);
+                            queryTotalPage(username,year, month, day, startHour, startMin, 23, 59);
                             console.log("第一天");
 
                         }
@@ -178,12 +182,12 @@
                             var days = parseInt(Date.substr(8, 2));
 
                             if (timestampToTime(startUnix1).substr(0, 10) === timestampToTime(endUnix1).substr(0, 10)) {
-                                queryTotalPage(years, months, days, 0, 0, endHour, endMin);
+                                queryTotalPage(username,years, months, days, 0, 0, endHour, endMin);
                                 console.log("最后一天");
                                 return;
                             }
-                            queryTotalPage(years, months, days, 0, 0, 23, 59);
-
+                            queryTotalPage(username,years, months, days, 0, 0, 23, 59);
+                            console.log("第一天和最后一天之间");
                         }
 
                     }
@@ -221,6 +225,30 @@
             })
 
 
+            function getQueryRecord(username,PersonName,PersonId,Similary,CompareTime,FacePictureBase64,getTime){
+                var year=getTime.getFullYear();
+                var month=getTime.getMonth()+1;
+                var date=getTime.getDate();
+                var h=getTime.getHours();       //获取当前小时数(0-23)
+                var m=getTime.getMinutes();     //获取当前分钟数(0-59)
+                var s=getTime.getSeconds();
+                var now=year+'-'+month+"-"+date+" "+h+':'+m+":"+s;
+                console.log(username)
+                $.ajax({
+                    url:"${pageContext.request.contextPath }/record/getQueryRecord",
+                    data:{
+                        "username":username,
+                        "PersonId":PersonId,
+                        "Similary":Similary,
+                        "CompareTime":CompareTime,
+                        "FacePictureBase64":FacePictureBase64,
+                        "QueryTime":now,
+                    },
+                    type:"post",
+                    dataType:"json",
+                });
+
+            }
 
             /*禁止页面横向拖动*/
             $('body').css("overflow-x", "hidden");
@@ -231,6 +259,7 @@
             */
             var startDate = $(".startDate").val();
             var endDate = $(".endDate").val();
+            console.log(startDate, endDate)
             $("#datetimeStart").datetimepicker({
                 language: 'zh-CN',
                 autoclose: true,
@@ -276,78 +305,6 @@
 
             })
 
-            $("#btn").click(function () {
-                console.log("666");
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath }/testJson1",
-                    type: "post",
-                    data: JSON.stringify({
-                        "Name": "personListRequest",
-                        "Data":
-                            {
-                                "Action": "getPersonList",
-                                "PersonType": 2,
-                                "PageNo": 1,
-                                "PageSize": 1000
-                            }
-                    }),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (data) {
-                        var obj = eval("(" + data + ")");
-                        $.each(obj.Data.PersonList, function (key, value) {
-                            needID(value.PersonId);
-                        })
-
-                    }
-                })
-
-                function needID(sno) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "personListRequest",
-                            "Data":
-                                {
-                                    "Action": "getPerson",
-                                    "PersonType": 2,
-                                    "PersonId": sno,
-                                    "GetPhoto": 1
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            tableContent = "";
-                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
-                            var name = obj.Data.PersonInfo.PersonName;
-                            var sex = obj.Data.PersonInfo.Sex;
-                            if (sex === 1) {
-                                sex = "男"
-                            } else {
-                                sex = "女"
-                            }
-                            ;
-                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
-                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
-                            var stu_cell = obj.Data.PersonInfo.Phone;
-                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
-
-                            tableContent += '<tr><td>' + name + '</td>';
-                            tableContent += '<td>' + sex + '</td>';
-                            tableContent += '<td>' + sno + '</td>';
-                            tableContent += '<td>' + major + '</td>';
-                            tableContent += '<td>' + grade + '</td></tr>';
-
-                            $("tbody").append(tableContent);
-                            // });
-
-                        }
-                    })
-                }
-
-            });
 
         });
     </script>
@@ -377,15 +334,11 @@
                         <input id="endDate" type="text" class="form-control" value="" placeholder="最终时间"/>
                         <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span></span>
+
                     </div>
                 </div>
-                <div class="col-sm-4 col-xs-12 inputSno">
-                    <div class="input-group date">
-                        <input class="hidden CheckVal" value="${CheckVal}"/>
-                        <input id="CheckVal" style="width: 297px" type="text" class="form-control"
-                               placeholder="请输入姓名或学号查找">
-                    </div>
-                </div>
+                <input class="hidden sno" value="${sno}"/>
+                <input class="hidden user_name" value="${session_user.username}">
             </td>
         </tr>
         <tr style="border-bottom: 1px solid rgb(240,242,245)">

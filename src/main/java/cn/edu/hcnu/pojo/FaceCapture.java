@@ -5,80 +5,70 @@ package cn.edu.hcnu.pojo;
  * @create 2021/3/2 14:33
  */
 public class FaceCapture{
-    private String stuName;
-    private String stuSno;
-    private String capturePictures;
-    private String nameList;
-    private String captureTime;
-    private String similarity;
-    private String captureAmount;
+    private String username;
+    private String PersonId;
+    private String Similary;
+    private String CompareTime;
+    private String FacePictureBase64;
+    private String QueryTime;
 
     public FaceCapture() {
     }
 
-    public FaceCapture(String stuName, String stuSno, String capturePictures, String nameList, String captureTime, String similarity, String captureAmount) {
-        this.stuName = stuName;
-        this.stuSno = stuSno;
-        this.capturePictures = capturePictures;
-        this.nameList = nameList;
-        this.captureTime = captureTime;
-        this.similarity = similarity;
-        this.captureAmount = captureAmount;
+    public FaceCapture(String username, String personId, String similary, String compareTime, String facePictureBase64, String queryTime) {
+        this.username = username;
+        PersonId = personId;
+        Similary = similary;
+        CompareTime = compareTime;
+        FacePictureBase64 = facePictureBase64;
+        QueryTime = queryTime;
     }
 
-    public String getStuName() {
-        return stuName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setStuName(String stuName) {
-        this.stuName = stuName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getStuSno() {
-        return stuSno;
+    public String getPersonId() {
+        return PersonId;
     }
 
-    public void setStuSno(String stuSno) {
-        this.stuSno = stuSno;
+    public void setPersonId(String personId) {
+        PersonId = personId;
     }
 
-    public String getCapturePictures() {
-        return capturePictures;
+    public String getSimilary() {
+        return Similary;
     }
 
-    public void setCapturePictures(String capturePictures) {
-        this.capturePictures = capturePictures;
+    public void setSimilary(String similary) {
+        Similary = similary;
     }
 
-    public String getNameList() {
-        return nameList;
+    public String getCompareTime() {
+        return CompareTime;
     }
 
-    public void setNameList(String nameList) {
-        this.nameList = nameList;
+    public void setCompareTime(String compareTime) {
+        CompareTime = compareTime;
     }
 
-    public String getCaptureTime() {
-        return captureTime;
+    public String getFacePictureBase64() {
+        return FacePictureBase64;
     }
 
-    public void setCaptureTime(String captureTime) {
-        this.captureTime = captureTime;
+    public void setFacePictureBase64(String facePictureBase64) {
+        FacePictureBase64 = facePictureBase64;
     }
 
-    public String getSimilarity() {
-        return similarity;
+    public String getQueryTime() {
+        return QueryTime;
     }
 
-    public void setSimilarity(String similarity) {
-        this.similarity = similarity;
-    }
-
-    public String getCaptureAmount() {
-        return captureAmount;
-    }
-
-    public void setCaptureAmount(String captureAmount) {
-        this.captureAmount = captureAmount;
+    public void setQueryTime(String queryTime) {
+        QueryTime = queryTime;
     }
 }

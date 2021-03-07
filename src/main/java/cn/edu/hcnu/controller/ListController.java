@@ -1,6 +1,7 @@
 package cn.edu.hcnu.controller;
 
 
+import cn.edu.hcnu.pojo.FaceCapture;
 import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
 import com.google.gson.JsonObject;
@@ -25,21 +26,21 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-@RequestMapping(value = "/main")
+@RequestMapping(value = "/list")
 public class ListController {
 
     /**
      * @author CF
-     * @Description 控制层调用服务层
+     * @Description 控制层调用Student服务层
      * @Date 15:29 2021/2/27
      * @Param
      * @return
      */
     @Qualifier("studentServiceImpl")
     private StudentService studentService;
-
     @Autowired
     public void setStudentService(StudentService studentService) {
         this.studentService = studentService;
@@ -48,7 +49,7 @@ public class ListController {
     /**
      * @return java.lang.String
      * @author CF
-     * @Description 登录成功后的页面, 用ajax发送请求到此控制器，拉取全部学生信息
+     * @Description 跳转到登录成功后的页面, 用ajax发送请求到此控制器，拉取全部学生信息
      * @Date 13:52 2021/2/25
      * @Param [model]
      */
@@ -64,7 +65,7 @@ public class ListController {
     /**
      * @return java.lang.String
      * @author CF
-     * @Description 跳转到详细页面，并根据时间段和条件查询
+     * @Description 跳转到根据时间段、ID查询的人脸对比记录页面
      * @Date 17:38 2021/2/15
      * @Param [sno, model]
      */
@@ -72,15 +73,28 @@ public class ListController {
     @RequestMapping(value = "/toDetails")
     @ResponseBody
     public void selectUser(HttpServletRequest request, HttpServletResponse response,
-                           @RequestParam("startDate") String startDate,
-                           @RequestParam("endDate") String endDate,
-                           @RequestParam("CheckVal") String CheckVal) {
-        System.out.println(startDate);
+                           @RequestParam(value = "startDate", required = false) String startDate,
+                           @RequestParam(value = "endDate", required = false) String endDate,
+                           @RequestParam(value = "sno") String sno) {
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
-        request.setAttribute("CheckVal", CheckVal);
+        request.setAttribute("sno", sno);
         request.setAttribute("mainright", "/WEB-INF/jsp/detailsPage.jsp");
         request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
+    }
+
+    /**
+    * @author CF
+    * @Description 获取用户查询的记录，保存在数据库
+    * @Date 19:10 2021/3/7
+    * @Param [faceCapture]
+    * @return void
+    */
+    @SneakyThrows
+    @RequestMapping(value = "/getQueryRecord")
+    @ResponseBody
+    public void getQueryRecord(FaceCapture faceCapture) {
+        System.out.println(faceCapture.getUsername());
     }
 
 
@@ -108,7 +122,6 @@ public class ListController {
     @ResponseBody
     public String httpPostWithJSON(@RequestBody JSONObject json) throws Exception {
 
-        // json = URLDecoder.decode(json, "UTF-8");
         HttpPost httpPost = new HttpPost("http://192.168.0.31:8011");
         CloseableHttpClient client = HttpClients.createDefault();
         String respContent = null;
@@ -125,30 +138,24 @@ public class ListController {
             respContent = EntityUtils.toString(he, "UTF-8");
         }
 
-
+        //获取从前端传入的json中的ChannelNo字段（因为盒子返回的json无此字段，页面需要此字段作为“抓拍场所”字段）
         String Data = json.get("Data").toString();
-
 
         JsonParser jp = new JsonParser();
         //将json字符串转化成json对象
         JsonObject jo = jp.parse(respContent).getAsJsonObject();
-        String Message = jo.get("Message").getAsString();
-        //截取频道字段，放入盒子返回的json串中
 
-        String ChannelNo = Data.substring(1,15);
-        System.out.println("==========:"+ChannelNo);
+        //截取频道字段，放入盒子返回的json串中
+        String ChannelNo = Data.substring(1, 15);
         String str = respContent;
         StringBuilder sb = new StringBuilder(str);
+
         //在指定的位置1，插入指定的字符串
-        sb.insert(1,ChannelNo);
+        sb.insert(1, ChannelNo);
         str = sb.toString();
-        
-            //System.out.println("\n");
-            //System.out.println("==================================================");
-            //System.out.println("str-----------------------------:"+str);
-            //System.out.println("Message：" + Message);
-            //System.out.println("==================================================");
-            return str;
+
+        //返回拼接好的串给页面接收
+        return str;
 
     }
 

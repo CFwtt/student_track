@@ -21,3 +21,4 @@ public interface UserMapper {
 
     List<User> queryAllUser();
 }
+

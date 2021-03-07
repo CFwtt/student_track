@@ -16,6 +16,7 @@
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
 
+    <link href="${pageContext.request.contextPath}/statics/css/modal_style.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
@@ -23,44 +24,64 @@
     <script>
 
         $(function () {
-
-            /*
-            加载页面第一时间从数据库拉取数据展示到页面
-             */
-            $(document).ready(function(){
+            /* 加载页面第一时间从数据库拉取数据展示到页面 */
+            $(document).ready(function () {
+                //do something
                 $.ajax({
-                    url: "${pageContext.request.contextPath }/main/allStudent",
+                    url: "${pageContext.request.contextPath }/list/allStudent",
                     type: "post",
                     contentType: "application/json;charset=UTF-8",
-                    success: function(data) {
+                    success: function (data) {
                         var startDate = $("startDate").val();
                         var endDate = $("endDate").val();
-                        console.log(startDate+" "+endDate);
-                        tableContent1="";
-                        if(data.length>0){
-                            for (var k=0;k<data.length-1;k++){
+                        console.log(startDate + " " + endDate);
+                        tableContent1 = "";
+                        if (data.length > 0) {
+                            for (var k = 0; k < data.length - 1; k++) {
+                                var sno = data[k].sno;
                                 tableContent1 += '<tr><td>' + data[k].name + '</td>';
                                 tableContent1 += '<td>' + data[k].sex + '</td>';
                                 tableContent1 += '<td>' + data[k].sno + '</td>';
                                 tableContent1 += '<td>' + data[k].grade + '</td>';
                                 tableContent1 += '<td>' + data[k].major + '</td>';
                                 tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                tableContent1 += '<td><button  type="submit" class="btn btn-info btn1">详情</button></td></tr>';
-
-                            } $("#content").append(tableContent1);
+                                tableContent1 += '<td>' + '<button " value="' + sno + '" id="two" class="btn">详情</button></tr>';
+                            }
+                            $("#content").append(tableContent1);
                         }
                     }
                 })
 
-            });
+            })
+
+            $(document).on("click", ".btn", function () {
+                var sno = $(this).val();
+                $(this).addClass('out');
+                tableContent = "";
+                tableContent = '<input name="sno" class="hidden" value="' + sno + '"/>';
+                $(".out").append(tableContent);
+
+                var startDate = $("#startDate").val();
+                var endDate = $("#endDate").val();
+                var startToUnix = Date.parse(startDate);
+                var endToUnix = Date.parse(endDate);
+                console.log("startToUnix:" + startToUnix)
+                console.log("endToUnix:" + endToUnix)
+                if (startDate.length == 0 || endDate.length == 0) {
+                    alert("查询日期不能为空！");
+                } else if (startToUnix > endToUnix) {
+                    alert("起始时间不能小于最终时间!")
+                }else {
+                    document.SearchForm.action = "${pageContext.request.contextPath}/list/toDetails";
+                    document.SearchForm.submit();
+                }
+            })
+
 
             /*禁止页面横向拖动*/
-            $('body').css("overflow-x","hidden");
-            $('body').css("height","870px")
-
-            /*
-            日历控件设置
-            */
+            $('body').css("overflow-x", "hidden");
+            $('body').css("height", "870px")
+            /*日历控件设置*/
             $("#datetimeStart").datetimepicker({
                 language: 'zh-CN',
                 autoclose: true,
@@ -69,188 +90,94 @@
                 language: 'zh-CN',
                 autoclose: true,
             });
-            // var  re = /^\d{10}$/ ;
-            // if (re.test(checkVal)) {      //判断字符是否是10位数字
-            //
-            // }else{
-            //     console.log("这是姓名")
-            // }
-
-            /*
-            为ajax动态生成的Dom元素，添加点击事件
-
-            $(document).on("click",".btn", function(){
-                var startDate = $("#startDate").val();
-                var endDate = $("#endDate").val();
-                var CheckVal = $("#CheckVal").val();
-
-                var json = {
-                    "startDate" : startDate,
-                    "endDate" : endDate,
-                    "CheckVal":CheckVal
-                };
-                $.ajax({
-                    url: "${pageContext.request.contextPath }/main/toDetails",
-                    type: "post",
-                    data: json,
-                    dataType : 'json',
-                })
-
-            })*/
-
-            $("#btn").click(function () {
-                console.log("666");
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath }/testJson1",
-                    type: "post",
-                    data: JSON.stringify({
-                        "Name": "personListRequest",
-                        "Data":
-                            {
-                                "Action": "getPersonList",
-                                "PersonType": 2,
-                                "PageNo": 1,
-                                "PageSize": 1000
-                            }
-                    }),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (data) {
-                        var obj = eval("(" + data + ")");
-                        $.each(obj.Data.PersonList, function (key, value) {
-                            needID(value.PersonId);
-                        })
-
-                    }
-                })
-
-                function needID(sno) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "personListRequest",
-                            "Data":
-                                {
-                                    "Action": "getPerson",
-                                    "PersonType": 2,
-                                    "PersonId": sno,
-                                    "GetPhoto": 1
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            tableContent = "";
-                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
-                            var name = obj.Data.PersonInfo.PersonName;
-                            var sex = obj.Data.PersonInfo.Sex;
-                            if (sex === 1) {
-                                sex = "男"
-                            } else {
-                                sex = "女"
-                            }
-                            ;
-                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
-                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
-                            var stu_cell = obj.Data.PersonInfo.Phone;
-                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
-
-                            tableContent += '<tr><td>' + name + '</td>';
-                            tableContent += '<td>' + sex + '</td>';
-                            tableContent += '<td>' + sno + '</td>';
-                            tableContent += '<td>' + major + '</td>';
-                            tableContent += '<td>' + grade + '</td></tr>';
-
-                            $("tbody").append(tableContent);
-                            // });
-
-                        }
-                    })
-                }
-
-            });
 
         });
     </script>
 
 <body>
-         <div class="right-top">
-                    <div class="newDateFont">最新数据<p style="font-size: 10px;margin-bottom: 0">(数据收集截止时间每天23:00)</p></div>
-                    <div class="top-content">
-                        <ul>
-                            <li>今日抓拍人数<p><a href="#">123</a></p></li>
-                            <li>今日人员访问最多场所<p><a href="#">123</a></p></li>
-                            <li>今日无出行人员<p><a href="#">123</a></p></li>
-                        </ul>
-                    </div>
-                </div>
 
-         <div class="right-bottom">
-             <form action="${pageContext.request.contextPath }/main/toDetails" method="post" id="form1">
-                 <table class="table table-condensed table-layout: fixed text-center right-bottom-table" >
-             <tbody>
-             <thead id="content">
-                 <tr>
-                     <td colspan="6">
-                         <div class="col-sm-4 col-xs-6 right-bottom-start">
-                             <div class="input-group date" id="datetimeStart">
-                                 <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" name="startDate" id="startDate" type="text" class="form-control" placeholder="起始时间"/>
-                                 <span class="input-group-addon">
+<div class="right-top">
+    <div class="newDateFont">最新数据<p style="font-size: 10px;margin-bottom: 0">(数据收集截止时间每天23:00)</p></div>
+    <div class="top-content">
+        <ul>
+            <li>今日抓拍人数<p><a href="#">123</a></p></li>
+            <li>今日人员访问最多场所<p><a href="#">123</a></p></li>
+            <li>今日无出行人员<p><a href="#">123</a></p></li>
+        </ul>
+    </div>
+</div>
+<div class="right-bottom">
+    <form method="post" id="SearchForm" name="SearchForm">
+        <table class="table table-condensed table-layout: fixed text-center right-bottom-table">
+            <tbody>
+            <thead id="content">
+            <tr>
+                <td colspan="6">
+                    <div class="col-sm-4 col-xs-6 right-bottom-start">
+                        <div class="input-group date" id="datetimeStart">
+                            <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
+                                   name="startDate" id="startDate" value="" type="text" class="form-control"
+                                   placeholder="起始时间"/>
+                            <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                             </div>
-                         </div>
-                         <div class="col-sm-4 col-xs-6 right-bottom-end">
-                             <div class="input-group date" id="datetimeEnd">
-                                 <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" name="endDate" id="endDate" type="text" class="form-control" placeholder="最终时间"/>
-                                 <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span></span>
-                             </div>
-                         </div>
-                         <div class="col-sm-4 col-xs-12 inputSno">
-
-                             <div class="input-group date" >
-                                 <input name="CheckVal" id="CheckVal" style="width: 297px" type="text" class="form-control" placeholder="请输入姓名或学号查找">
-                             </div>
-                         </div>
-                     </td>
-                 </tr>
-                 <tr style="border-bottom: 1px solid rgb(240,242,245)">
-                     <th style="width: 14%">姓名</th>
-                     <th style="width: 8%">性别</th>
-                     <th style="width: 15%">学号</th>
-                     <th style="width: 10%">年级</th>
-                     <th style="width: 16%">专业</th>
-                     <th style="width: 16%">二级学院</th>
-                     <th style="width: 18%">详情</th>
-                 </tr>
-                 </thead>
-                 </tbody>
-             </table>
-             </form>
-
-                    <div class="Page" style="background-color: white">
-                        <nav style="float: right;padding-right: 43%;" aria-label="Page navigation">
-                            <ul style="vertical-align: center" class="pagination">
-                                <li>
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        </div>
                     </div>
-                </div>
+                    <div class="col-sm-4 col-xs-6 right-bottom-end">
+                        <div class="input-group date" id="datetimeEnd">
+                            <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
+                                   name="endDate" id="endDate" type="text" value="" class="form-control"
+                                   placeholder="最终时间"/>
+                            <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 col-xs-12 inputSno">
+                        <div class="input-group date">
+                            <input name="CheckVal" id="CheckVal" style="width: 297px" type="text" class="form-control"
+                                   placeholder="请输入姓名或学号查找">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr style="border-bottom: 1px solid rgb(240,242,245)">
+                <th style="width: 14%">姓名</th>
+                <th style="width: 8%">性别</th>
+                <th style="width: 15%">学号</th>
+                <th style="width: 10%">年级</th>
+                <th style="width: 16%">专业</th>
+                <th style="width: 16%">二级学院</th>
+                <th style="width: 18%">详情</th>
+            </tr>
+            </thead>
+
+            </tbody>
+        </table>
+    </form>
+
+    <div class="Page" style="background-color: white">
+        <nav style="float: right;padding-right: 43%;" aria-label="Page navigation">
+            <ul style="vertical-align: center" class="pagination">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
 </body>
 </html>

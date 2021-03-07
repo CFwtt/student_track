@@ -18,6 +18,10 @@
     <bean id="userServiceImpl" class="cn.edu.hcnu.service.UserServiceImpl">
         <property name="userMapper" ref="userMapper"/>
     </bean>
+    <!--FaceCaptureServiceImpl注入到IOC容器中-->
+    <bean id="faceCaptureServiceImpl" class="cn.edu.hcnu.service.FaceCaptureServiceImpl">
+        <property name="faceCaptureRecordMapper" ref="faceCaptureRecordMapper"/>
+    </bean>
 
     <!-- 配置事务管理器 -->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

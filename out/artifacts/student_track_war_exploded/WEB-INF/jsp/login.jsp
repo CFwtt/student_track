@@ -51,7 +51,7 @@
                         <button type="submit" class="btn submit">登 录</button>
                         <a style="color: red" class="bottom-text-w3ls">${wrongMsg}</a>
                     </form>
-                </article
+                </article>
             </div>
 
             <div id="section3" class="section-w3ls" >

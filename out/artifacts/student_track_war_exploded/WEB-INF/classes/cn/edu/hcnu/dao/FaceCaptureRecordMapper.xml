@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hcnu.dao.FaceCaptureRecordMapper">
+    <!--查询用户查过的人脸抓拍记录-->
+    <select id="queryStudentByName" resultType="FaceCapture">
+      select * from student_track.face_capture
+      where username = #{username}
+   </select>
+    <!--增加一个查询记录-->
+    <insert id="saveRecord" parameterType="FaceCapture">
+      insert into student_track.face_capture(username,PersonId,Similary,CompareTime,FacePictureBase64,QueryTime)
+      values ( #{username}, #{PersonId}, #{Similary},#{CompareTime}, #{FacePictureBase64}, #{QueryTime})
+   </insert>
+</mapper>
