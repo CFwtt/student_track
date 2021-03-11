@@ -24,6 +24,7 @@
     </bean>
 
 
+    <mvc:default-servlet-handler/>
     <mvc:view-controller path="/" view-name="login"/>
     <mvc:view-controller path="login" view-name="login"/>
     <!-- 4.扫描web相关的bean -->

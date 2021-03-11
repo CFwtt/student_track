@@ -91,6 +91,12 @@
                 autoclose: true,
             });
 
+           // $("#CheckVal").keyup(function () {
+           //     $("table>tbody>tr")
+           //         .hide()
+           //         .filter(":contains('" + ($(this).val()) + "')")
+           //         .show();
+           // });
         });
     </script>
 

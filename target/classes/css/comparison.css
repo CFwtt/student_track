@@ -20,7 +20,7 @@ a:hover{
 /*修改container的最大宽度为1700*/
 @media screen and (min-width: 1600px){
     .container{
-        width: 1600px;
+        width:1920px;
     }
 }
 .container{
