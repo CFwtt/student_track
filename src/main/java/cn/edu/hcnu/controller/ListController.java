@@ -75,12 +75,13 @@ public class ListController {
     public void selectUser(HttpServletRequest request, HttpServletResponse response,
                            @RequestParam(value = "startDate", required = false) String startDate,
                            @RequestParam(value = "endDate", required = false) String endDate,
-                           @RequestParam(value = "sno") String sno) {
+                           @RequestParam(value = "sno",required = false) String sno) {
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
         request.setAttribute("sno", sno);
+        System.out.println("startDate:"+startDate+" endDate:"+endDate+" sno:"+ sno);
         request.setAttribute("mainright", "/WEB-INF/jsp/detailsPage.jsp");
-        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/mainTest.jsp").forward(request, response);
     }
 
     /**

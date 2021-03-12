@@ -20,16 +20,14 @@
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
-
     <script>
-
         $(function () {
             /* 加载页面第一时间从数据库拉取数据展示到页面 */
             $(document).ready(function () {
                 //do something
                 $.ajax({
                     url: "${pageContext.request.contextPath }/list/allStudent",
-                    type: "post",
+                    method: "post",
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
                         var startDate = $("startDate").val();
@@ -45,7 +43,7 @@
                                 tableContent1 += '<td>' + data[k].grade + '</td>';
                                 tableContent1 += '<td>' + data[k].major + '</td>';
                                 tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                tableContent1 += '<td>' + '<button " value="' + sno + '" id="two" class="btn">详情</button></tr>';
+                                tableContent1 += '<td>' + '<button " value="' + sno + '"  class="btn1">详情</button></tr>';
                             }
                             $("#content").append(tableContent1);
                         }
@@ -54,7 +52,7 @@
 
             })
 
-            $(document).on("click", ".btn", function () {
+            $(document).on("click", ".btn1", function () {
                 var sno = $(this).val();
                 $(this).addClass('out');
                 tableContent = "";
@@ -91,12 +89,12 @@
                 autoclose: true,
             });
 
-           // $("#CheckVal").keyup(function () {
-           //     $("table>tbody>tr")
-           //         .hide()
-           //         .filter(":contains('" + ($(this).val()) + "')")
-           //         .show();
-           // });
+            // $("#CheckVal").keyup(function () {
+            //     $("table>tbody>tr")
+            //         .hide()
+            //         .filter(":contains('" + ($(this).val()) + "')")
+            //         .show();
+            // });
         });
     </script>
 

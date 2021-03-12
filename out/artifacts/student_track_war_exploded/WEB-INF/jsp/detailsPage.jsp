@@ -142,7 +142,7 @@
                                     var FacePictureBase64 = value.FacePicture;
                                     var nowDate = new Date();
                                     if (GetAsciiCode(value.PersonId)==sno){
-                                        tableContent1 += '<tr><td>' + '抓拍图片' + '</td>';
+                                        tableContent1 += '<tr><td>' + '<img style="height: 150px;width: 140px" src="data:image/jpeg;base64,'+FacePictureBase64+'">' + '</td>';
                                         tableContent1 += '<td>' + PersonName + '</td>';
                                         tableContent1 += '<td>' + '学号' + '</td>';
                                         tableContent1 += '<td>' + value.ListName + '</td>';
