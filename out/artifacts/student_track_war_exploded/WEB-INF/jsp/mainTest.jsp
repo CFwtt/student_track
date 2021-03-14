@@ -13,12 +13,18 @@
     <link href="${pageContext.request.contextPath}/assets/css/icons.min.css" rel="stylesheet" >
     <link href="${pageContext.request.contextPath}/assets/css/theme.min.css" rel="stylesheet" >
 
+    <%--时间选择控件--%>
+    <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+
     <!-- jQuery  -->
     <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/metismenu.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/waves.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/simplebar.min.js"></script>
+
+
 
 </head>
 
@@ -43,10 +49,10 @@
                     <li class="menu-title">Menu</li>
 
                     <li>
-                        <a href="mainTest.jsp" class="waves-effect"><i class='bx bx-home-smile'></i><span>人脸抓拍</span></a>
+                        <a href="${pageContext.request.contextPath}/menu/toFaceCapture" class="waves-effect"><i class='bx bx-home-smile'></i><span>人脸抓拍</span></a>
                     </li>
 
-                    <li><a href="team.html" class="waves-effect"><i
+                    <li><a href="${pageContext.request.contextPath}/menu/toStuDatabase" class="waves-effect"><i
                             class="bx bx-user-circle"></i><span>人像管理</span></a>
                     </li>
 
@@ -173,17 +179,20 @@
     <!-- Start right Content here -->
     <!-- ============================================================== -->
     <div class="main-content">
-
+        <div class="page-content">
         <jsp:include page="${mainright==null?'mainrightTest.jsp':mainright}"></jsp:include>
+        </div>
+
+        <footer class="footer">
+        </footer>
 
     </div>
     <!-- end main content-->
 
 </div>
 <!-- END layout-wrapper -->
+<!-- End Page-content -->
 
-<!-- Overlay-->
-<div class="menu-overlay"></div>
 
 
 

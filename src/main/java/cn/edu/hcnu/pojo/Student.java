@@ -12,12 +12,14 @@ public class Student {
     private String major;
     private String grade;
     private String s_college;
+    private String phone;
+    private String add_time;
 
     public Student(){
 
     }
 
-    public Student(String face, String name, String sex, String sno, String major, String grade, String s_college) {
+    public Student(String face, String name, String sex, String sno, String major, String grade, String s_college, String phone, String add_time) {
         this.face = face;
         this.name = name;
         this.sex = sex;
@@ -25,6 +27,8 @@ public class Student {
         this.major = major;
         this.grade = grade;
         this.s_college = s_college;
+        this.phone = phone;
+        this.add_time = add_time;
     }
 
     public String getName() {
@@ -81,5 +85,36 @@ public class Student {
 
     public void setFace(String face) {
         this.face = face;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "face='" + face + '\'' +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", sno='" + sno + '\'' +
+                ", major='" + major + '\'' +
+                ", grade='" + grade + '\'' +
+                ", s_college='" + s_college + '\'' +
+                ", phone='" + phone + '\'' +
+                ", add_time='" + add_time + '\'' +
+                '}';
     }
 }

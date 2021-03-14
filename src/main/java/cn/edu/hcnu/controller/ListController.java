@@ -46,6 +46,7 @@ public class ListController {
         this.studentService = studentService;
     }
 
+
     /**
      * @return java.lang.String
      * @author CF
@@ -57,7 +58,6 @@ public class ListController {
     @ResponseBody
     public List<Student> toComparison() {
         List<Student> students = studentService.queryAllStudent();
-        System.out.println(students);
         return students;
     }
 
@@ -100,15 +100,19 @@ public class ListController {
 
 
     /**
-     * @return java.lang.String
-     * @author CF
-     * @Description 跳转到添加页面
-     * @Date 17:40 2021/2/15
-     * @Param []
-     */
-    @RequestMapping("/toAddStudeent")
-    public String toAddPaPer() {
-        return "addStudent";
+    * @author CF
+    * @Description 添加学生资料
+    * @Date 15:12 2021/3/13
+    * @Param [student]
+    * @return void
+    */
+    @SneakyThrows
+    @RequestMapping("/AddStudent")
+    @ResponseBody
+    public void AddStudent(Student student) {
+        System.out.println(student);
+        studentService.addStudent(student);
+
     }
 
 
@@ -139,24 +143,9 @@ public class ListController {
             respContent = EntityUtils.toString(he, "UTF-8");
         }
 
-        //获取从前端传入的json中的ChannelNo字段（因为盒子返回的json无此字段，页面需要此字段作为“抓拍场所”字段）
-        String Data = json.get("Data").toString();
-
-        JsonParser jp = new JsonParser();
-        //将json字符串转化成json对象
-        JsonObject jo = jp.parse(respContent).getAsJsonObject();
-
-        //截取频道字段，放入盒子返回的json串中
-        String ChannelNo = Data.substring(1, 15);
-        String str = respContent;
-        StringBuilder sb = new StringBuilder(str);
-
-        //在指定的位置1，插入指定的字符串
-        sb.insert(1, ChannelNo);
-        str = sb.toString();
 
         //返回拼接好的串给页面接收
-        return str;
+        return respContent;
 
     }
 

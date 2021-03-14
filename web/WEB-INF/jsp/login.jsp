@@ -56,7 +56,7 @@
 
             <div id="section3" class="section-w3ls" >
                 <input type="radio" name="sections" id="option3">
-                <label for="option3" class="icon-left-w3pvt" style="padding-bottom: 98px;"><span class="fa fa-lock" aria-hidden="true"></span>忘记密码?</label>
+                <label for="option3" class="icon-left-w3pvt" style="padding-bottom: 85px;"><span class="fa fa-lock" aria-hidden="true"></span>忘记密码?</label>
                 <article>
                     <form action="#" method="post" style="padding-bottom: 71px;">
                         <h3 class="legend last">重置密码</h3>

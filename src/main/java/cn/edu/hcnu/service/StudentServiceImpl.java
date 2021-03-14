@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     public int addStudent(Student student) {
-        return 0;
+        return studentMapper.addStudent(student);
     }
 
     public int deleteStudent(String sno) {

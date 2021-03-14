@@ -5,8 +5,8 @@
 <mapper namespace="cn.edu.hcnu.dao.StudentMapper">
     <!--增加一个Book-->
     <insert id="addStudent" parameterType="Student">
-      insert into student_track.tb_student(sno,name,sex,s_college,major,grade)
-      values (#{sno}, #{name}, #{sex}, #{s_college}, #{major}, #{grade})
+      insert into student_track.tb_student(sno,name,sex,s_college,major,grade,face,phone,add_time)
+      values (#{sno}, #{name}, #{sex}, #{s_college}, #{major}, #{grade},#{face},#{phone},#{add_time})
    </insert>
 
     <!--根据id删除一个Book-->
@@ -17,7 +17,7 @@
     <!--更新Book-->
     <update id="updateStudent" parameterType="Student">
       update student_track.tb_student
-      set name = #{name},sex = #{sex},sno = #{sno},major = #{major},grade = #{grade},s_college = #{s_college}
+      set name = #{name},sex = #{sex},sno = #{sno},major = #{major},grade = #{grade},s_college = #{s_college},face = #{face},phone = #{s_college},add_time = #{add_time}
       where sno = #{sno}
    </update>
 

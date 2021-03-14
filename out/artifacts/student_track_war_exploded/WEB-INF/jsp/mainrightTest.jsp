@@ -8,15 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- App css -->
-    <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/assets/css/icons.min.css" rel="stylesheet" >
-    <link href="${pageContext.request.contextPath}/assets/css/theme.min.css" rel="stylesheet" >
-
     <%--时间选择控件--%>
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link href="${pageContext.request.contextPath}/assets/css/daterangepicker.css" rel="stylesheet">
+
+
 
     <script>
         $(function () {
@@ -73,15 +69,8 @@
                 }
             })
 
-            /*日历控件设置*/
-            $("#datetimeStart").datetimepicker({
-                language: 'zh-CN',
-                autoclose: true,
-            });
-            $("#datetimeEnd").datetimepicker({
-                language: 'zh-CN',
-                autoclose: true,
-            });
+
+
 
             // $("#CheckVal").keyup(function () {
             //     $("table>tbody>tr")
@@ -102,8 +91,6 @@
     <!-- Start right Content here -->
     <!-- ============================================================== -->
 
-
-        <div class="page-content">
             <div class="container-fluid">
 
                 <!-- start page title -->
@@ -251,42 +238,25 @@
                                     <form method="post" id="SearchForm" name="SearchForm">
                                     <table class="table table-borderless table-hover mb-0">
                                         <thead id="content" class="thead-light">
-                                        <td colspan="6">
-                                            <div class="col-sm-4 col-xs-6 right-bottom-start">
-                                                <div class="input-group date" id="datetimeStart">
-                                                    <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
-                                                           name="startDate" id="startDate" value="" type="text" class="form-control"
-                                                           placeholder="起始时间"/>
-                                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                                </div>
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-sm-4">
+                                                <input type="text" class="form-control date " id="daterangetime" data-toggle="daterangepicker" data-time-picker="true" data-locale="{'format': 'DD/MM hh:mm A'}" placeholder="点击此处输入查询时间...">
                                             </div>
-                                            <div class="col-sm-4 col-xs-6 right-bottom-end">
-                                                <div class="input-group date" id="datetimeEnd">
-                                                    <input data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p"
-                                                           name="endDate" id="endDate" type="text" value="" class="form-control"
-                                                           placeholder="最终时间"/>
-                                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span></span>
-                                                </div>
-                                            </div>
-
                                             <div class="col-sm-4 col-xs-12 inputSno">
                                                 <div class="input-group date">
                                                     <input name="CheckVal" id="CheckVal" style="width: 297px" type="text" class="form-control"
                                                            placeholder="请输入姓名或学号查找">
                                                 </div>
                                             </div>
-                                        </td>
+                                        </div>
                                         <tr>
-                                            <th style="width: 14%">姓名</th>
-                                            <th style="width: 8%">性别</th>
-                                            <th style="width: 15%">学号</th>
-                                            <th style="width: 10%">年级</th>
-                                            <th style="width: 16%">专业</th>
-                                            <th style="width: 16%">二级学院</th>
-                                            <th style="width: 18%">详情</th>
+                                            <th>姓名</th>
+                                            <th>性别</th>
+                                            <th>学号</th>
+                                            <th>年级</th>
+                                            <th>专业</th>
+                                            <th>二级学院</th>
+                                            <th>详情</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -304,25 +274,11 @@
                 <!-- end row-->
 
             </div> <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
+    <%--时间选择控件--%>
 
-        <footer class="footer">
-
-        </footer>
-
-<!-- END layout-wrapper -->
-
-
-<!-- Morris Custom Js-->
-<script src="${pageContext.request.contextPath}/assets/pages/dashboard-demo.js"></script>
-
-<!-- App js -->
-<script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
-<!-- Morris Js-->
-<script src="${pageContext.request.contextPath}/assets/js/morris.min.js"></script>
-<!-- Raphael Js-->
-<script src="${pageContext.request.contextPath}/assets/js/raphael.min.js"></script>
+    <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/daterangepicker.js"></script>
 
 </body>
 

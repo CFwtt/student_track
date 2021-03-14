@@ -15,10 +15,8 @@
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
     <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/statics/css/detailsPage.css" rel="stylesheet">
 
     <script>
 
@@ -27,7 +25,6 @@
             /*
             加载页面第一时间从数据库拉取数据展示到页面
              */
-
             $(document).ready(function () {
                 var startDate = $(".startDate").val();
                 var endDate = $(".endDate").val();
