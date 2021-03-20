@@ -2,6 +2,7 @@ package cn.edu.hcnu.dao;
 import cn.edu.hcnu.pojo.Student;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author CF
@@ -17,8 +18,8 @@ public interface StudentMapper {
     //编辑学生信息
     int updateStudent(Student student);
 
-    //根据名字查询学生
-    Student queryStudentByName(String Name);
+    //根据学号或姓名查询学生
+    List<Student> queryStudentByNameAndSno(String vule);
 
     //查询全部学生
     List<Student> queryAllStudent();

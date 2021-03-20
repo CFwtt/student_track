@@ -27,20 +27,17 @@
                     method: "post",
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
-                        var startDate = $("startDate").val();
-                        var endDate = $("endDate").val();
-                        console.log(startDate + " " + endDate);
+                        var obj = data.list;
                         tableContent1 = "";
-                        if (data.length > 0) {
-                            for (var k = 0; k < data.length - 1; k++) {
-                                var sno = data[k].sno;
-                                tableContent1 += '<tr><td>' + data[k].name + '</td>';
-                                tableContent1 += '<td>' + data[k].sex + '</td>';
-                                tableContent1 += '<td>' + data[k].sno + '</td>';
-                                tableContent1 += '<td>' + data[k].grade + '</td>';
-                                tableContent1 += '<td>' + data[k].major + '</td>';
-                                tableContent1 += '<td>' + data[k].s_college + '</td>';
-                                tableContent1 += '<td>' + '<button  " value="' + sno + '" id="two" class="btn btn-info details">详情</button></tr>';
+                        if (obj.length > 0) {
+                            for (var k = 0; k < obj.length - 1; k++) {
+                                tableContent1 += '<tr><td>' + obj[k].name + '</td>';
+                                tableContent1 += '<td>' + obj[k].sex + '</td>';
+                                tableContent1 += '<td>' + obj[k].sno + '</td>';
+                                tableContent1 += '<td>' + obj[k].grade + '</td>';
+                                tableContent1 += '<td>' + obj[k].major + '</td>';
+                                tableContent1 += '<td>' + obj[k].s_college + '</td>';
+                                tableContent1 += '<td>' + '<button  " value="' + obj[k].sno + '" id="two" class="btn btn-info details">详情</button></tr>';
                             }
                             $("#content").append(tableContent1);
                         }
@@ -52,7 +49,6 @@
             $(document).on("click", ".details", function () {
                 var sno = $(this).val();
                 $("#nameOrSno").attr("value",sno);
-
 
                 var startDate = $("#startDate").val();
                 var endDate = $("#endDate").val();
@@ -80,12 +76,80 @@
             });
 
             $('.card-body').css("overflow-x","hidden");
-            // $("#CheckVal").keyup(function () {
-            //     $("table>tbody>tr")
-            //         .hide()
-            //         .filter(":contains('" + ($(this).val()) + "')")
-            //         .show();
-            // });
+
+            function nav(index){
+                var data = $("#SearchForm").serialize()+"&pageIndex="+index;
+                console.log("SearchForm:"+data)
+                $.ajax({
+                    url:"${pageContext.request.contextPath }/list/getPageStudent",
+                    type:"post",
+                    data:{"page": page },
+                    dataType:"html",  //【注意返回的数据类型为：html】
+                    success:function (data) {
+                        $("#tabData").html(data);//handler返回的内容显示在页面中
+                    }
+                });
+            }
+
+            $("#nameOrSno").onclick(function () {
+                $("#content").empty();
+                var value = $("#nameOrSno").val();
+                console.log(value)
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/list/SearchStudent",
+                    data:  {"value": value },
+                    method: "post",
+
+                    success: function (data) {
+                        console.log(data)
+                        var obj = data.list;
+                        tableContent = "";
+                        if (obj.length > 0) {
+                            for (var k = 0; k < obj.length - 1; k++) {
+                                tableContent += '<tr><td>' + obj[k].name + '</td>';
+                                tableContent += '<td>' + obj[k].sex + '</td>';
+                                tableContent += '<td>' + obj[k].sno + '</td>';
+                                tableContent += '<td>' + obj[k].grade + '</td>';
+                                tableContent += '<td>' + obj[k].major + '</td>';
+                                tableContent += '<td>' + obj[k].s_college + '</td>';
+                                tableContent += '<td>' + '<button  " value="' + obj[k].sno + '" id="two" class="btn btn-info details">详情</button></tr>';
+                            }
+                            $("#content").append(tableContent);
+                        }
+                    }
+                })
+
+            });
+
+            $("#nameOrSno").keyup(function () {
+                $("#content").empty();
+                var value = $("#nameOrSno").val();
+                console.log(value)
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/list/SearchStudent",
+                    data:  {"value": value },
+                    method: "post",
+
+                    success: function (data) {
+                        console.log(data)
+                        var obj = data.list;
+                        tableContent = "";
+                        if (obj.length > 0) {
+                            for (var k = 0; k < obj.length - 1; k++) {
+                                tableContent += '<tr><td>' + obj[k].name + '</td>';
+                                tableContent += '<td>' + obj[k].sex + '</td>';
+                                tableContent += '<td>' + obj[k].sno + '</td>';
+                                tableContent += '<td>' + obj[k].grade + '</td>';
+                                tableContent += '<td>' + obj[k].major + '</td>';
+                                tableContent += '<td>' + obj[k].s_college + '</td>';
+                                tableContent += '<td>' + '<button  " value="' + obj[k].sno + '" id="two" class="btn btn-info details">详情</button></tr>';
+                            }
+                            $("#content").append(tableContent);
+                        }
+                    }
+                })
+
+             });
         });
     </script>
 
@@ -263,7 +327,7 @@
                     <div class="table-responsive overflow-hidden">
                         <form method="post" id="SearchForm" name="SearchForm">
                             <table class="table table-borderless table-hover mb-0">
-                                <thead id="content" class="thead-light">
+                                <thead  class="thead-light firstContent">
                                 <div class="row">
                                     <div class="col-sm-3 col-xs-2 right-bottom-start">
                                         <div class="input-group date" id="datetimeStart">
@@ -305,7 +369,7 @@
                                     <th>详情</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="content">
 
                                 </tbody>
 
@@ -313,18 +377,18 @@
                             <nav>
                                 <ul class="pagination pagination-sm" style="padding-left:40% ">
                                     <li class="page-item">
-                                        <a class="page-link waves-effect" href="javascript: void(0);" aria-label="Previous">
+                                        <a class="page-link waves-effect" href="${page}<0;${pageContext.request.contextPath }/list/SearchStudent?page=1?${pageContext.request.contextPath }/list/SearchStudent?${page-1}" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
+                                            <span class="sr-only">上一页</span>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link waves-effect" href="javascript: void(0);">1</a></li>
-                                    <li class="page-item active"><a class="page-link waves-effect" href="javascript: void(0);">2</a></li>
-                                    <li class="page-item"><a class="page-link waves-effect" href="javascript: void(0);">3</a></li>
+                                    <li class="page-item"><a class="page-link waves-effect" href="${pageContext.request.contextPath }/list/SearchStudent?page=${page-1}">${page-1}</a></li>
+                                    <li class="page-item active"><a class="page-link waves-effect" href="${pageContext.request.contextPath }/list/SearchStudent?page=${page}">${page}</a></li>
+                                    <li class="page-item"><a class="page-link waves-effect" href="${pageContext.request.contextPath }/list/SearchStudent?page=${page}+1">${page+1}</a></li>
                                     <li class="page-item">
-                                        <a class="page-link waves-effect" href="javascript: void(0);" aria-label="Next">
+                                        <a class="page-link waves-effect" href="${pageContext.request.contextPath }/list/SearchStudent?page=${page+1}" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
+                                            <span class="sr-only">下一页</span>
                                         </a>
                                     </li>
                                 </ul>

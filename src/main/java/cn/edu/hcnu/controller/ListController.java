@@ -4,12 +4,10 @@ package cn.edu.hcnu.controller;
 import cn.edu.hcnu.pojo.FaceCapture;
 import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.github.pagehelper.PageInfo;
 import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -21,12 +19,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/list")
@@ -56,9 +51,17 @@ public class ListController {
      */
     @RequestMapping(value = "/allStudent")
     @ResponseBody
-    public List<Student> toComparison() {
-        List<Student> students = studentService.queryAllStudent();
-        return students;
+    public PageInfo<Student> allStudent() {
+        return studentService.queryAllStudent(1,10);
+    }
+
+    @RequestMapping(value = "/getPageStudent")
+    @ResponseBody
+    public PageInfo<Student> getPageStudent(@RequestParam(required = false) Integer pageIndex,
+                                            @RequestParam(required = false) String querystuName,
+                                            @RequestParam(required = false) String sno,
+                                            HttpServletRequest request){
+        return studentService.queryAllStudent(1,10);
     }
 
 
@@ -113,6 +116,19 @@ public class ListController {
         System.out.println(student);
         studentService.addStudent(student);
 
+    }
+
+    @SneakyThrows
+    @RequestMapping("/SearchStudent")
+    @ResponseBody
+    public PageInfo<Student> SearchStudent(HttpServletRequest request, @RequestParam(value = "value",required = false) String value,
+                                           @RequestParam(name = "page", defaultValue = "1",required = false) Integer page,
+                                           @RequestParam(value = "pagesize",required = false) Integer pagesize) {
+        System.out.println("page:"+page);
+        request.setAttribute("page",page);
+        PageInfo<Student> pageInfo = studentService.queryStudentByNameAndSno(page,8,value);
+        pageInfo.setPageNum(page);
+        return studentService.queryStudentByNameAndSno(page,8,value);
     }
 
 

@@ -9,10 +9,10 @@
 
     'use strict';
 
-    // function initMetisMenu() {
-    //     //metis menu
-    //     $("#side-menu").metisMenu();
-    // }
+    function initMetisMenu() {
+        //metis menu
+        $("#side-menu").metisMenu();
+    }
 
     function initLeftMenuCollapse() {
         // Left menu collapse
@@ -42,21 +42,21 @@
         });
     }
 
-    // function initComponents() {
-    //     $(function () {
-    //         $('[data-toggle="tooltip"]').tooltip()
-    //     })
-    //
-    //     $(function () {
-    //         $('[data-toggle="popover"]').popover()
-    //     })
-    // }
+    function initComponents() {
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    }
 
     function init() {
-        // initMetisMenu();
+        initMetisMenu();
         initLeftMenuCollapse();
         initActiveMenu();
-        // initComponents();
+        initComponents();
         Waves.init();
     }
 

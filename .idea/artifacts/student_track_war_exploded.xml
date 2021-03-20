@@ -6,6 +6,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="student_track" />
+          <element id="library" level="application" name="bootstrap" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: Arquillian JUnit:Release" />
@@ -41,6 +42,10 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.9.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.9.RELEASE" />
+          <element id="file-copy" path="D:/BigHomework/mysql-connector-java-5.1.49-bin.jar" />
+          <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:5.2.0" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:0.9.1" />
+          <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:3.2" />
         </element>
       </element>
     </root>

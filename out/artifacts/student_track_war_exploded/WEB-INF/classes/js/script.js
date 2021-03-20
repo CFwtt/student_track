@@ -5,7 +5,7 @@ $('.btn').click(function(){
   $('body').addClass('modal-active');
   tableContent="";
   tableContent = '<button  class="btn1">确定</button>';
-  $("#content").append(tableContent1);
+  $("#content").append(tableContent);
 })
 
 $('#modal-container').click(function(){

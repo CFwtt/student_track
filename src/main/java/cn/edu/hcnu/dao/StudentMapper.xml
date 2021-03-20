@@ -21,10 +21,9 @@
       where sno = #{sno}
    </update>
 
-    <!--根据学号查询,返回一个学生-->
-    <select id="queryStudentByName" resultType="Student">
-      select * from student_track.tb_student
-      where sno = #{sno}
+    <!--根据学号姓名模糊查询-->
+    <select id="queryStudentByNameAndSno"  resultType="Student">
+      select * from student_track.tb_student where `name` LIKE concat('%',#{vule},'%') or sno LIKE concat('%',#{vule},'%')
    </select>
 
     <!--查询全部学生-->

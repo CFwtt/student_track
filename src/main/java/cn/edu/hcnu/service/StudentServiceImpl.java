@@ -2,10 +2,12 @@ package cn.edu.hcnu.service;
 
 import cn.edu.hcnu.dao.StudentMapper;
 import cn.edu.hcnu.pojo.Student;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author CF
@@ -32,12 +34,19 @@ public class StudentServiceImpl implements StudentService {
         return 0;
     }
 
-    public Student queryStudentBysno(String sno) {
-        return null;
+    public PageInfo<Student> queryStudentByNameAndSno(int page, int pagesize,String value) {
+        PageHelper.startPage(page,pagesize);
+        System.out.println("page:"+page+" pagesize:"+pagesize+" value:"+value);
+        List<Student> list = studentMapper.queryStudentByNameAndSno(value);
+        PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        return pageInfo;
     }
 
-    public List<Student> queryAllStudent() {
-        return studentMapper.queryAllStudent();
-    }
 
+    public PageInfo<Student> queryAllStudent(int page, int pagesize) {
+        PageHelper.startPage(page,pagesize);
+        List<Student> list = studentMapper.queryAllStudent();
+        PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        return pageInfo;
+    }
 }
