@@ -2,12 +2,12 @@ package cn.edu.hcnu.service;
 
 import cn.edu.hcnu.dao.StudentMapper;
 import cn.edu.hcnu.pojo.Student;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author CF
@@ -22,31 +22,37 @@ public class StudentServiceImpl implements StudentService {
         this.studentMapper=studentMapper;
     }
 
+    @Override
     public int addStudent(Student student) {
         return studentMapper.addStudent(student);
     }
 
+    @Override
     public int deleteStudent(String sno) {
         return 0;
     }
 
+    @Override
     public int updateStudent(Student student) {
         return 0;
     }
 
-    public PageInfo<Student> queryStudentByNameAndSno(int page, int pagesize,String value) {
+    @Override
+    public PageInfo<Student> queryStudentByNameAndSno(Integer page, Integer pagesize, String value) {
         PageHelper.startPage(page,pagesize);
-        System.out.println("page:"+page+" pagesize:"+pagesize+" value:"+value);
         List<Student> list = studentMapper.queryStudentByNameAndSno(value);
-        PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        PageInfo<Student> pageInfo = new PageInfo<>(list);
         return pageInfo;
     }
 
 
-    public PageInfo<Student> queryAllStudent(int page, int pagesize) {
-        PageHelper.startPage(page,pagesize);
+    @Override
+    public PageInfo<Student> queryAllStudent(Integer page, Integer size) {
+        PageHelper.startPage(page,size);
         List<Student> list = studentMapper.queryAllStudent();
         PageInfo<Student> pageInfo = new PageInfo<Student>(list);
         return pageInfo;
     }
+
+
 }

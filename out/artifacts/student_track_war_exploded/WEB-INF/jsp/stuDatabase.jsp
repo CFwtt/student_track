@@ -27,29 +27,28 @@
                     method: "post",
                     contentType: "application/json;charset=UTF-8",
                     success: function (data) {
-                        var startDate = $("startDate").val();
-                        var endDate = $("endDate").val();
-                        console.log(startDate + " " + endDate);
+                        obj = data.list;
                         tableContent1 = "";
-                        if (data.length > 0) {
-                            for (var k = 0; k < data.length; k++) {
+                        if (obj.length > 0) {
+                            for (var k = 0; k < obj.length; k++) {
 
                                 tableContent1 += '<div class="col-xl-2 col-lg-3">'
                                 tableContent1 += '<div class="card card-animate">'
-                                tableContent1 += '<img class="card-img-top img-fluid" src="data:image/jpeg;base64,'+data[k].face+'" alt="Card image cap">'
+                                tableContent1 += '<img class="card-img-top img-fluid" style="width: 183px;height: 240px" src="data:image/jpeg;base64,'+ obj[k].face+'" alt="Card image cap">'
                                 tableContent1 += '<div class="card-body">'
-                                tableContent1 += '<h5 class="mb-1">'+data[k].name+'</h5>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].sex+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].sno+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].grade+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].major+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].s_college+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].phone+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+data[k].add_time+'</p>'
+                                tableContent1 += '<h5 class="mb-1">'+ obj[k].name+'</h5>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+  obj[k].sex+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].sno+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].grade+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].major+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].s_college+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].phone+'</p>'
+                                //添加时间
+                                //tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].add_time+'</p>'
 
                                 tableContent1 += '<div class="custom-control custom-checkbox custom-control-inline">'
-                                tableContent1 += '<input type="checkbox" class="custom-control-input" class="customCheck">'
-                                tableContent1 += '<label class="custom-control-label" for="customCheck"></label>'
+                                tableContent1 += '<input type="checkbox" class="custom-control-input" id="customCheck'+k+'">'
+                                tableContent1 += '<label class="custom-control-label" for="customCheck'+k+'"></label>'
                                 tableContent1 += '</div>'
                                 tableContent1 += '</div>'
                                 tableContent1 += '</div>'
@@ -62,38 +61,7 @@
 
 
             })
-
-
-            $(document).on("click", ".details", function () {
-                var sno = $(this).val();
-                $(this).addClass('sno');
-                tableContent = "";
-                tableContent = '<input name="sno" class="hidden" value="' + sno + '"/>';
-                $(".sno").append(tableContent);
-
-                var startDate = $("#startDate").val();
-                var endDate = $("#endDate").val();
-                var startToUnix = Date.parse(startDate);
-                var endToUnix = Date.parse(endDate);
-                console.log("startToUnix:" + startToUnix)
-                console.log("endToUnix:" + endToUnix)
-                if (startDate.length == 0 || endDate.length == 0) {
-                    alert("查询日期不能为空！");
-                } else if (startToUnix > endToUnix) {
-                    alert("起始时间不能小于最终时间!")
-                }else {
-                    document.SearchForm.action = "${pageContext.request.contextPath}/list/toDetails";
-                    document.SearchForm.submit();
-                }
-            })
-
-
-            // $("#CheckVal").keyup(function () {
-            //     $("table>tbody>tr")
-            //         .hide()
-            //         .filter(":contains('" + ($(this).val()) + "')")
-            //         .show();
-            // });
+            
         });
     </script>
 
@@ -116,7 +84,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card card-animate">
-                <div class="card-body">
+                <div class="card-body card-body1">
                     <div class="row">
                         <div class="col-lg-8">
                             <form class="form-inline">
@@ -135,12 +103,11 @@
                                     </select>
                                 </div>
                                 <div class="dropdown d-none d-sm-inline-block">
-                                    <button id="addButton" class="btn"
-                                            data-toggle="dropdown" >
+                                    <button id="addButton" class="btn">
                                         <i class="mdi mdi-plus"></i><a class="d-sm-inline-block" href="${pageContext.request.contextPath}/menu/toAddStudents">添加人像</a>
                                     </button>
                                 </div>
-                            </form>
+                              </form>
                         </div>
 
                     </div> <!-- end row -->

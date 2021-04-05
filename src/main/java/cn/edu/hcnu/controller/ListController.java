@@ -4,6 +4,7 @@ package cn.edu.hcnu.controller;
 import cn.edu.hcnu.pojo.FaceCapture;
 import cn.edu.hcnu.pojo.Student;
 import cn.edu.hcnu.service.StudentService;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.SneakyThrows;
 import net.sf.json.JSONObject;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/list")
@@ -51,18 +54,13 @@ public class ListController {
      */
     @RequestMapping(value = "/allStudent")
     @ResponseBody
-    public PageInfo<Student> allStudent() {
-        return studentService.queryAllStudent(1,10);
+    public PageInfo<Student> allStudent(@RequestParam(value = "page", required = false,defaultValue = "1") Integer page,
+                                        @RequestParam(value = "size", required = false,defaultValue = "10") Integer pagesize) {
+
+        System.out.println(page);
+        return studentService.queryAllStudent(page,10);
     }
 
-    @RequestMapping(value = "/getPageStudent")
-    @ResponseBody
-    public PageInfo<Student> getPageStudent(@RequestParam(required = false) Integer pageIndex,
-                                            @RequestParam(required = false) String querystuName,
-                                            @RequestParam(required = false) String sno,
-                                            HttpServletRequest request){
-        return studentService.queryAllStudent(1,10);
-    }
 
 
     /**
@@ -83,9 +81,11 @@ public class ListController {
         request.setAttribute("endDate", endDate);
         request.setAttribute("sno", sno);
         System.out.println("startDate:"+startDate+" endDate:"+endDate+" sno:"+ sno);
-        request.setAttribute("mainright", "/WEB-INF/jsp/detailsPage.jsp");
-        request.getRequestDispatcher("/WEB-INF/jsp/mainTest.jsp").forward(request, response);
+        request.setAttribute("mainRight", "/WEB-INF/jsp/detailsPage.jsp");
+        request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
     }
+
+
 
     /**
     * @author CF
@@ -121,14 +121,12 @@ public class ListController {
     @SneakyThrows
     @RequestMapping("/SearchStudent")
     @ResponseBody
-    public PageInfo<Student> SearchStudent(HttpServletRequest request, @RequestParam(value = "value",required = false) String value,
-                                           @RequestParam(name = "page", defaultValue = "1",required = false) Integer page,
+    public PageInfo<Student> SearchStudent(@RequestParam(value = "value",required = false) String value,
+                                           @RequestParam(name = "page",required = false) Integer page,
                                            @RequestParam(value = "pagesize",required = false) Integer pagesize) {
         System.out.println("page:"+page);
-        request.setAttribute("page",page);
-        PageInfo<Student> pageInfo = studentService.queryStudentByNameAndSno(page,8,value);
-        pageInfo.setPageNum(page);
-        return studentService.queryStudentByNameAndSno(page,8,value);
+        System.out.println("value:"+value);
+        return studentService.queryStudentByNameAndSno(page,10,value);
     }
 
 
@@ -164,6 +162,5 @@ public class ListController {
         return respContent;
 
     }
-
 
 }

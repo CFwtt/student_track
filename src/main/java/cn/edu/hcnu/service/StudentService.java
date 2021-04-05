@@ -3,6 +3,7 @@ package cn.edu.hcnu.service;
 import cn.edu.hcnu.pojo.Student;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,9 +21,9 @@ public interface StudentService {
     int updateStudent(Student student);
 
     //查询一个学生
-    PageInfo<Student> queryStudentByNameAndSno(int page, int pagesize,String value);
+    PageInfo<Student> queryStudentByNameAndSno(Integer page, Integer pagesize, String value);
 
     //查询全部学生
-    PageInfo<Student> queryAllStudent(int page, int pagesize);
+    PageInfo<Student> queryAllStudent(Integer page,Integer size);
 
 }

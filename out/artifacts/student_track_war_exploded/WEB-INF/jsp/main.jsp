@@ -3,156 +3,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>测试JSON交互</title>
+    <title>Admin & Dashboard Template</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 
-    <script src="${pageContext.request.contextPath}/statics/js/jquery-1.9.1.min.js"></script>
+    <!-- App css -->
+    <link href="${pageContext.request.contextPath}/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/assets/css/icons.min.css" rel="stylesheet" >
+    <link href="${pageContext.request.contextPath}/assets/css/theme.min.css" rel="stylesheet" >
 
     <%--时间选择控件--%>
     <link href="${pageContext.request.contextPath}/statics/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap-datetimepicker.zh-CN.js"></script>
-
-    <link href="${pageContext.request.contextPath}/statics/css/bootstrap.min.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/statics/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/statics/css/comparison.css" rel="stylesheet">
 
 
-
-    <script>
-
-        $(function () {
-
-            $('body').css("overflow-x","hidden");
-            $('body').css("height","870px")
-
-            // $("#datetimeStart").datetimepicker({
-            //     format: 'yyyy-mm-dd',
-            //     minView: 'month',
-            //     language: 'zh-CN',
-            //     autoclose: true,
-            // });
-            // $("#datetimeEnd").datetimepicker({
-            //     format: 'yyyy-mm-dd',
-            //     minView: 'month',
-            //     language: 'zh-CN',
-            //     autoclose: true,
-            // });
+    <!-- jQuery  -->
+    <script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/metismenu.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/waves.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/simplebar.min.js"></script>
 
 
 
-            $("#check").click(function () {
-
-                $.ajax({
-                    url: "${pageContext.request.contextPath }/testJson1",
-                    type: "post",
-                    data: JSON.stringify({
-                        "Name": "personListRequest",
-                        "Data":
-                            {
-                                "Action": "getPersonList",
-                                "PersonType": 2,
-                                "PageNo": 1,
-                                "PageSize": 1000
-                            }
-                    }),
-                    contentType: "application/json;charset=UTF-8",
-                    success: function (data) {
-                        var obj = eval("(" + data + ")");
-                        $.each(obj.Data.PersonList, function (key, value) {
-                            needID(value.PersonId);
-                        })
-
-                    }
-                })
-
-                function needID(sno) {
-                    $.ajax({
-                        url: "${pageContext.request.contextPath }/testJson1",
-                        type: "post",
-                        data: JSON.stringify({
-                            "Name": "personListRequest",
-                            "Data":
-                                {
-                                    "Action": "getPerson",
-                                    "PersonType": 2,
-                                    "PersonId": sno,
-                                    "GetPhoto": 1
-                                }
-                        }),
-                        contentType: "application/json;charset=UTF-8",
-                        success: function (data) {
-                            var obj = eval("(" + data + ")");
-                            tableContent = "";
-                            var img = "data:image/jpg;base64," + obj.Data.PersonInfo.PersonPhoto;
-                            var name = obj.Data.PersonInfo.PersonName;
-                            var sex = obj.Data.PersonInfo.Sex;
-                            if (sex === 1) {
-                                sex = "男"
-                            } else {
-                                sex = "女"
-                            }
-                            ;
-                            var major = obj.Data.PersonInfo.PersonExtension.PersonData1;
-                            var grade = obj.Data.PersonInfo.PersonExtension.PersonData3;
-                            var stu_cell = obj.Data.PersonInfo.Phone;
-                            var parent_cell = obj.Data.PersonInfo.PersonExtension.PersonData4;
-
-                            tableContent += '<tr><td>' + name + '</td>';
-                            tableContent += '<td>' + sex + '</td>';
-                            tableContent += '<td>' + sno + '</td>';
-                            tableContent += '<td>' + major + '</td>';
-                            tableContent += '<td>' + grade + '</td></tr>';
-
-                            $("tbody").append(tableContent);
-                            // });
-
-                        }
-                    })
-                }
-
-            });
-
-        });
-    </script>
+</head>
 
 <body>
-<div class="header">
-    <div class="top-content">
-        <div class="logoInfo">
-            <img class="hidden-xs" src="${pageContext.request.contextPath}/statics/img/logo.png">
-            <span class="visible-xs">学生轨迹查询</span>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== Left Sidebar Start ========== -->
+    <div class="vertical-menu">
+
+        <div data-simplebar class="h-100">
+
+            <div class="navbar-brand-box hidden-xs" style="background-color: rgb(6,120,244)">
+                <img class="hidden-xs" style="width:100%;height: 100%" src="${pageContext.request.contextPath}/statics/img/logo.png">
+            </div>
+
+            <!--- Sidemenu -->
+            <div id="sidebar-menu">
+                <!-- Left Menu Start -->
+                <ul class="metismenu list-unstyled" id="side-menu">
+                    <li class="menu-title">Menu</li>
+
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu/toFaceCapture" class="waves-effect"><i class='bx bx-home-smile'></i><span>人脸抓拍</span></a>
+                    </li>
+
+                    <li><a href="${pageContext.request.contextPath}/menu/toStuDatabase" class="waves-effect"><i
+                            class="bx bx-user-circle"></i><span>人像管理</span></a>
+                    </li>
+
+                    <li>
+                        <a href="javascript: void(0);" class="waves-effect"><i class="bx bxs-eraser"></i><span>基础设置</span></a>
+                    </li>
+
+                    <li><a href="dark-sidenav.html" class="waves-effect"><i
+                            class="bx bx-layout"></i><span>权限管理</span></a>
+                    </li>
+
+
+
+                </ul>
+            </div>
+            <!-- Sidebar -->
         </div>
     </div>
-</div>
+    <!-- Left Sidebar End -->
 
-<div class="background">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-1 left">
-                <div class="nav" style="padding-left: 5px">
-                    <ul>
-                        <li><a id="a1" href="${pageContext.request.contextPath}/allStudent" class="glyphicon glyphicon-camera">人员搜索</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-user">人员验证</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-folder-open">人库管理</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-facetime-video">基础设置</a></li>
-                        <li><a href="#" class="glyphicon glyphicon-wrench hidden-xs">账号权限</a></li>
-                    </ul>
+    <header id="page-topbar">
+        <div class="navbar-header">
+
+            <div class="d-flex align-items-left">
+                <button type="button" class="btn btn-sm mr-2 d-lg-none px-3 font-size-16 header-item waves-effect"
+                        id="vertical-menu-btn">
+                    <i class="fa fa-fw fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="d-flex align-items-center">
+
+                <div class="dropdown d-inline-block">
+                    <button type="button" class="btn header-item noti-icon waves-effect"
+                            id="page-header-notifications-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" style="padding-right: 20px;">
+                        <i class="mdi mdi-bell-outline"></i>
+                        <span class="badge badge-danger badge-pill">3</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                         aria-labelledby="page-header-notifications-dropdown">
+                        <div class="p-3">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="m-0"> Notifications </h6>
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#!" class="small font-weight-bold"> View All</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div data-simplebar style="max-height: 230px;">
+                            <a href="" class="text-reset notification-item">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">Samuel Coverdale</h6>
+                                        <p class="font-size-12 mb-1">You have new follower on Instagram</p>
+                                        <p class="font-size-11 font-weight-bold mb-0 text-muted"><i
+                                                class="mdi mdi-clock-outline"></i> 2 min ago</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="" class="text-reset notification-item">
+                                <div class="media">
+                                    <div class="avatar-xs mr-3">
+                                            <span class="avatar-title bg-primary rounded-circle">
+                                                <i class="mdi mdi-cloud-download-outline"></i>
+                                            </span>
+                                    </div>
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">Download Available !</h6>
+                                        <p class="font-size-11 mb-1">Latest version of admin is now available.
+                                            Please download here.</p>
+                                        <p class="font-size-11 font-weight-bold mb-0 text-muted"><i
+                                                class="mdi mdi-clock-outline"></i> 4 hours ago</p>
+                                    </div>
+                                </div>
+                            </a>
+                            <a href="" class="text-reset notification-item">
+                                <div class="media">
+
+                                    <div class="media-body">
+                                        <h6 class="mt-0 mb-1">Victoria Mendis</h6>
+                                        <p class="font-size-12 mb-1">Just upgraded to premium account.</p>
+                                        <p class="font-size-11 font-weight-bold mb-0 text-muted"><i
+                                                class="mdi mdi-clock-outline"></i> 1 day ago</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <a class="btn btn-sm btn-link btn-block text-center font-size-14" href="javascript:void(0)">
+                                Load More.. <i class="mdi mdi-arrow-right ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-11 right">
-                <jsp:include page="${mainright==null?'comparisonRecord1.jsp':mainright}"></jsp:include>
+
+                <div class="dropdown d-inline-block">
+                    <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img class="rounded-circle header-profile-user" src="${pageContext.request.contextPath}/statics/img/登陆头像.jpg"
+                             alt="Header Avatar">
+                        <span class="d-none d-sm-inline-block ml-1">Jamie D.</span>
+                        <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                           href="javascript:void(0)">
+                            个人资料
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center justify-content-between"
+                           href="javascript:void(0)">
+                            <span>退出账号</span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
         </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+        <jsp:include page="${mainRight==null?'mainRight.jsp':mainRight}"></jsp:include>
+        </div>
+
+        <footer class="footer">
+        </footer>
+
     </div>
-</div>
+    <!-- end main content-->
 
 </div>
+<!-- END layout-wrapper -->
+<!-- End Page-content -->
+<!-- Overlay-->
+<div class="menu-overlay"></div>
+
+
+
+<!-- Morris Custom Js-->
+<script src="${pageContext.request.contextPath}/assets/pages/dashboard-demo.js"></script>
+
+<!-- App js -->
+<script src="${pageContext.request.contextPath}/assets/js/theme.js"></script>
+<!-- Morris Js-->
+<script src="${pageContext.request.contextPath}/assets/js/morris.min.js"></script>
+<!-- Raphael Js-->
+<script src="${pageContext.request.contextPath}/assets/js/raphael.min.js"></script>
+
 </body>
+
 </html>

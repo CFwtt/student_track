@@ -27,16 +27,13 @@ import java.util.List;
 public class LoginController {
 
 
-    @Qualifier("studentServiceImpl")
-    private StudentService studentService;
-
-
     @Qualifier("userServiceImpl")
     private UserService userService;
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
+
 
     /**
     * @author CF
@@ -56,7 +53,7 @@ public class LoginController {
             //用户输入学号和密码正确，登录成功，跳转到主页面
             //保存在session中的数据，默认是30分钟内有效。保存在session中的数据，在整个项目中都可以获取得到
             request.getSession().setAttribute("session_user", user);
-           return "mainTest";
+           return "main";
         }else {
             request.setAttribute("wrongMsg","用户名密码错误");
             request.getSession().setAttribute("wrongMsg","用户名密码错误");
