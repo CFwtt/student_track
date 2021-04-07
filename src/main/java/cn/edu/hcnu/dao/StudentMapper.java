@@ -25,4 +25,8 @@ public interface StudentMapper {
 
     //查询全部学生
     List<Student> queryAllStudent();
+
+    //查询学生
+    //根据学号或姓名查询学生
+    List<Student> queryStudent(String value);
 }

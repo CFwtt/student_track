@@ -25,10 +25,10 @@
             /* 加载页面第一时间从数据库拉取数据展示到页面 */
             $(document).ready(function () {
                 //do something
-               getPageData(1);
+               getAllPageData(1);
             })
 
-            function getPageData(pageNum){
+            function getAllPageData(pageNum){
                 console.log("getPageData:"+pagetype);
                 console.log("pageNum:"+pageNum);
                 $("#content").html("");
@@ -54,6 +54,8 @@
                             $("#content").append(tableContent1);
                         }
                         $("#page").text(pageNum);
+                        $("#totalPage").text(data.pages);
+                        $("#totalData").text(data.total);
                     }
                 })
             }
@@ -73,7 +75,7 @@
                         var obj = data.list;
                         tableContent = "";
                         if (obj.length > 0) {
-                            for (var k = 0; k < obj.length - 1; k++) {
+                            for (var k = 0; k < obj.length; k++) {
                                 tableContent += '<tr><td>' + obj[k].name + '</td>';
                                 tableContent += '<td>' + obj[k].sex + '</td>';
                                 tableContent += '<td>' + obj[k].sno + '</td>';
@@ -84,6 +86,9 @@
                             }
                             $("#content").append(tableContent);
                         }
+                        $("#page").text(data.pageNum);
+                        $("#totalPage").text(data.pages);
+                        $("#totalData").text(data.total);
                     }
                 })
             }
@@ -133,9 +138,12 @@
             prePage=function(){
                 var text = $("#page").text();
                 var page = parseInt(text)-1;
+                if(page<1){
+                    page=text;
+                }
                 $("#page").text(page);
                 if (pagetype===1){
-                    getPageData(page);
+                    getAllPageData(page);
                 }else {
                     getSearchPageData(page,inputValue);
                 }
@@ -144,9 +152,14 @@
             nextPage=function(){
                 var text = $("#page").text();
                 var page = parseInt(text)+1;
+                console.log("nextPage:"+page);
+                console.log("nextPage:"+parseInt($("#totalPage").text()));
+                if(page>parseInt($("#totalPage").text())){
+                    page=text;
+                }
                 $("#page").text(page);
                 if (pagetype===1){
-                    getPageData(page);
+                    getAllPageData(page);
                 }else {
                     getSearchPageData(page,inputValue);
                 }
@@ -180,6 +193,9 @@
                             }
                             $("#content").append(tableContent);
                         }
+                        $("#page").text(data.pageNum);
+                        $("#totalPage").text(data.pages);
+                        $("#totalData").text(data.total);
                     }
                 })
             })
@@ -409,6 +425,9 @@
                             </table>
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center" style="padding-right: 10%">
+                                    <li class="page-item active">
+                                        当前共<a class=" waves-effect" id="totalData"></a>条记录;共<a class=" waves-effect" id="totalPage"></a>页
+                                    </li>
                                     <li class="page-item active">
                                         <a class=" waves-effect" onclick="prePage()" style="padding-top: 8px;padding-right: 8px;">上一页</a>
                                     </li>

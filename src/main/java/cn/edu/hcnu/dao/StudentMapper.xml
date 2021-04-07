@@ -31,4 +31,14 @@
       SELECT * from student_track.tb_student
    </select>
 
+    <!--查询学生-->
+    <select id="queryStudent" resultType="Student">
+      SELECT * from student_track.tb_student
+      <where>
+          <if test="value !='' and value != null" >
+              `name` LIKE concat('%',#{vule},'%') or sno LIKE concat('%',#{vule},'%')
+          </if>
+      </where>
+   </select>
+
 </mapper>

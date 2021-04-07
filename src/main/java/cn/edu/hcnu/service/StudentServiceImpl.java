@@ -6,6 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -42,15 +43,27 @@ public class StudentServiceImpl implements StudentService {
         PageHelper.startPage(page,pagesize);
         List<Student> list = studentMapper.queryStudentByNameAndSno(value);
         PageInfo<Student> pageInfo = new PageInfo<>(list);
+        System.out.println(pageInfo);
         return pageInfo;
     }
 
 
     @Override
     public PageInfo<Student> queryAllStudent(Integer page, Integer size) {
+        System.out.println("SearchStudentPage:"+page);
         PageHelper.startPage(page,size);
         List<Student> list = studentMapper.queryAllStudent();
         PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        return pageInfo;
+    }
+
+
+    @Override
+    public PageInfo<Student> queryStudent(Integer page, Integer pagesize, String value) {
+        PageHelper.startPage(page,pagesize);
+        List<Student> StudentList = studentMapper.queryStudent(value);
+        PageInfo<Student> pageInfo = new PageInfo<>(StudentList);
+        System.out.println(pageInfo);
         return pageInfo;
     }
 

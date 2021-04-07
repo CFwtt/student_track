@@ -57,10 +57,31 @@ public class ListController {
     public PageInfo<Student> allStudent(@RequestParam(value = "page", required = false,defaultValue = "1") Integer page,
                                         @RequestParam(value = "size", required = false,defaultValue = "10") Integer pagesize) {
 
-        System.out.println(page);
+        System.out.println("allStudentPage:"+page);
         return studentService.queryAllStudent(page,10);
     }
 
+    @SneakyThrows
+    @RequestMapping("/SearchStudent")
+    @ResponseBody
+    public PageInfo<Student> SearchStudent(@RequestParam(value = "value",required = false) String value,
+                                           @RequestParam(name = "page",required = false) Integer page,
+                                           @RequestParam(value = "pagesize",required = false) Integer pagesize) {
+        System.out.println("SearchStudentPage:"+page);
+        System.out.println("value:"+value);
+        return studentService.queryStudentByNameAndSno(page,10,value);
+    }
+
+    @RequestMapping("/queryStudent")
+    @ResponseBody
+    public String queryStudent(@RequestParam(value = "value",required = false) String value,
+                                          @RequestParam(name = "page",required = false,defaultValue = "1") Integer page,
+                                          @RequestParam(value = "pagesize",required = false,defaultValue = "10") Integer pagesize,Model model){
+        PageInfo<Student> pageInfo =  studentService.queryStudent(page,10,value);
+        model.addAttribute("pageInfo",pageInfo);
+        model.addAttribute("mainRight", "/WEB-INF/jsp/mainRight2.jsp");
+        return "main";
+    }
 
 
     /**
@@ -118,16 +139,6 @@ public class ListController {
 
     }
 
-    @SneakyThrows
-    @RequestMapping("/SearchStudent")
-    @ResponseBody
-    public PageInfo<Student> SearchStudent(@RequestParam(value = "value",required = false) String value,
-                                           @RequestParam(name = "page",required = false) Integer page,
-                                           @RequestParam(value = "pagesize",required = false) Integer pagesize) {
-        System.out.println("page:"+page);
-        System.out.println("value:"+value);
-        return studentService.queryStudentByNameAndSno(page,10,value);
-    }
 
 
     /**

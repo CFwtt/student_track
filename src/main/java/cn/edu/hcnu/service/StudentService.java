@@ -26,4 +26,7 @@ public interface StudentService {
     //查询全部学生
     PageInfo<Student> queryAllStudent(Integer page,Integer size);
 
+    //查询学生
+    PageInfo<Student> queryStudent(Integer page, Integer pagesize, String value);
+
 }
