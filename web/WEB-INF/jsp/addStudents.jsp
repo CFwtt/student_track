@@ -29,8 +29,8 @@
                 //定义全局变量，方便给jquery调用
                 window.base64 = "";
                 base64 = this.result.replace("data:image/jpeg;base64,","");
-            //     img_area.innerHTML = '<div>已选图片展示：</div><img style="height: 340px;width: 290px" src="'+this.result+'" alt=""/>';
-             }
+                //     img_area.innerHTML = '<div>已选图片展示：</div><img style="height: 340px;width: 290px" src="'+this.result+'" alt=""/>';
+            }
         }
     </script>
 

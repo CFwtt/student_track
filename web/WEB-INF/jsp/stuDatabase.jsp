@@ -38,7 +38,7 @@
                                 tableContent1 += '<div class="card-body">'
                                 tableContent1 += '<h5 class="mb-1">'+ obj[k].name+'</h5>'
                                 tableContent1 += '<p class="text-muted font-size-15">'+  obj[k].sex+'</p>'
-                                tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].sno+'</p>'
+                                tableContent1 += '<p class="text-muted font-size-15 sno">'+ obj[k].sno+'</p>'
                                 tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].grade+'</p>'
                                 tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].major+'</p>'
                                 tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].s_college+'</p>'
@@ -47,7 +47,7 @@
                                 //tableContent1 += '<p class="text-muted font-size-15">'+ obj[k].add_time+'</p>'
 
                                 tableContent1 += '<div class="custom-control custom-checkbox custom-control-inline">'
-                                tableContent1 += '<input type="checkbox" class="custom-control-input" id="customCheck'+k+'">'
+                                tableContent1 += '<input name="Check[]" type="checkbox" class="custom-control-input" value="'+ obj[k].sno+'" id="customCheck'+k+'">'
                                 tableContent1 += '<label class="custom-control-label" for="customCheck'+k+'"></label>'
                                 tableContent1 += '</div>'
                                 tableContent1 += '</div>'
@@ -61,7 +61,55 @@
 
 
             })
-            
+            $("#deleteButton").click(function () {
+                if(confirm('确定要删除所选吗?')) {
+                    for(var i=0;i<$("input[name='Check[]']").length;i++){//遍历$("input[name='teachar']").length的个数
+                        //console.log($("input[name='teachar']"))
+                        var checkDatas = new Array();
+                        if($("input[name='Check[]']")[i].checked==true){//判断是否选中的值
+                            var checkData=$("input[name='Check[]']")[i].value;//输出value值
+                            console.log(checkData)
+                        }
+                    }
+                }
+            });
+
+            function deletePersonal() {
+                $.ajax({
+                    url: "${pageContext.request.contextPath }/list/testJson1",
+                    type: "post",
+                    data: JSON.stringify({
+                            "Name" : "personListRequest",
+                            "Data" :
+                                {
+                                    "Action" : "addPerson",
+                                    "PersonType" : 2,
+                                    "PersonInfo" :
+                                        {
+                                            "PersonCover":0,
+                                            "PersonId" : ""+sno+"",
+                                            "PersonName":""+name+"",
+                                            "PersonPhoto" :""+base64+""
+                                        }
+                                }
+                        }
+                    ),
+
+                    contentType: "application/json;charset=UTF-8",
+                    //定义回调响应的数据格式为JSON字符串,该属性可以省略
+                    //dataType : "json",
+                    success: function (data) {
+                        var obj = eval("(" + data + ")")
+                        console.log(major,grade);
+                        if(obj.Code===1){alert("添加成功！")
+                            location.href="${pageContext.request.contextPath}/menu/toStuDatabase";
+                            getStuInFo(name,sex,sno,major,grade,stu_cell,s_college);
+                        }else{alert("添加失败！Code:"+obj.Code)}
+                    }
+                })
+            }
+
+
         });
     </script>
 
@@ -105,6 +153,11 @@
                                 <div class="dropdown d-none d-sm-inline-block">
                                     <button id="addButton" class="btn">
                                         <i class="mdi mdi-plus"></i><a class="d-sm-inline-block" href="${pageContext.request.contextPath}/menu/toAddStudents">添加人像</a>
+                                    </button>
+                                </div>
+                                <div class="dropdown d-none d-sm-inline-block">
+                                    <button id="deleteButton" class="btn">
+                                        <i class="mdi mdi-plus"></i><a class="d-sm-inline-block" href="#">删除选中</a>
                                     </button>
                                 </div>
                               </form>

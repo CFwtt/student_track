@@ -58,7 +58,7 @@ public class ListController {
                                         @RequestParam(value = "size", required = false,defaultValue = "10") Integer pagesize) {
 
         System.out.println("allStudentPage:"+page);
-        return studentService.queryAllStudent(page,10);
+        return studentService.queryAllStudent(page,12);
     }
 
     @SneakyThrows
